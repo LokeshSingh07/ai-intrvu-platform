@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ====================================================================================
+enum FocusArea {
+  FRONTEND
+  BACKEND
+  TESTER
+  SYSTEM_DESIGN     @map("SYSTEM DESIGN")
+  DSA
+}
+enum CompanySize {
+  STARTUP
+  SME
+  ENTERPRISE
+}
+enum ExperienceLevel {
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+}
+enum InterviewType { 
+  BEHAVIORAL        @map("BEHAVIORAL")
+  TECHNICAL         @map("TECHNICAL")
+  SYSTEM_DESIGN     @map("SYSTEM DESIGN")
+} 
+enum DifficultyLevel { 
+  EASY
+  MEDIUM
+  HARD
+}
+enum Duration {
+  MIN_15   @map("15 Minutes")
+  MIN_30   @map("30 Minutes")
+  MIN_45   @map("45 Minutes")
+  MIN_60   @map("60 Minutes")
+  MIN_90   @map("90 Minutes")
+  MIN_120  @map("120 Minutes")
+}
+enum InterviewMode {
+  TEXT_CHAT @map("textChat")
+  VOICE     @map("voice")
+  VIDEO     @map("video")
+}
+enum JobPosition {
+  FRONTEND_DEVELOPER   @map("Frontend Developer")
+  BACKEND_DEVELOPER    @map("Backend Developer")
+  FULLSTACK_DEVELOPER  @map("Fullstack Developer")
+  TESTER               @map("Tester")
+  SYSTEM_DESIGNER      @map("System Designer")
+  DATA_SCIENTIST       @map("Data Scientist")
+  DEVOPS_ENGINEER      @map("DevOps Engineer")
+}
+
+
+
+
+// ====================================================================================
+
+model User{
+  id                        String          @id       @default(uuid())
+  firstName                 String
+  lastName                  String
+  email                     String          @unique
+  password                  String
+  bio                       String?
+  resume                    String?
+  verifyCode                String
+  image                     String?
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+
+  industry                  String[]
+  targetRoles               String[]
+  experienceLevel           ExperienceLevel
+  targetCompanySize         CompanySize
+  focusArea                 FocusArea[]
+
+  interviewSessions         InterviewSession[]
+}
+
+
+
+model InterviewSession{
+  id                        String          @id       @default(uuid())
+  sessionId                 String
+  userId                    String
+  user                      User            @relation(fields: [userId], references: [id])
+  interviewType             InterviewType
+  difficultyLevel           DifficultyLevel
+  duration                  Duration
+  interviewMode             InterviewMode
+  jobPosition               JobPosition
+  jobDescription            String
+  experienceLevel           ExperienceLevel
+  techStack                 String[]
+  faceMoveCount             String?
+  feedback                  String?
+  rating                    String?
+  createdAt                 DateTime        @default(now())
+  answers                   Question[]
+}
+
+
+
+model Question{
+  id                        String          @id       @default(uuid())
+  interviewSessionId        String
+  interviewSession          InterviewSession          @relation(fields: [interviewSessionId], references: [id])
+  question                  String
+  correctAnswer             String
+  userAnswer                String 
+  feedback                  String
+  
+}
+
+
