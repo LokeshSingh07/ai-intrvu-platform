@@ -292,7 +292,7 @@ const InterviewSetup = () => {
                   <Label htmlFor="job-role">Target Job Role</Label>
                   <Select 
                     value={jobPosition}
-                    onValueChange={(val)=> setValue("jobPosition", val)}
+                    onValueChange={(val)=> setValue("jobPosition", val as JobPosition)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a job role" />

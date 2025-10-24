@@ -24,9 +24,11 @@ import { useSession } from "next-auth/react";
 
 interface ProfileInfoProps {
   profileInfo?: {
-    name: string;
-    email: string;
-    bio?: string;
+    id?: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    bio?: string | null;
   }
 }
 

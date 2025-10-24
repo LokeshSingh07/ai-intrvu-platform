@@ -63,6 +63,10 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       // console.log("credentials : ", credentials)
+      if (!user.email) {
+        return false;
+      }
+
       const userInfo = await prisma.user.findUnique({
           where: { email: user.email },
       });
@@ -77,7 +81,7 @@ export const authOptions: NextAuthOptions = {
 
       if(user){
         token.id = user.id;
-        token.name = user.name 
+        token.name = user.name;
         token.email = user.email;
       }
       
@@ -87,7 +91,7 @@ export const authOptions: NextAuthOptions = {
       // console.log("Session : ", session)
       // console.log("Token: ", token)
       if(token){
-        session.user.id = token.id;
+        session.user.id = token.id as string;
         session.user.name = token.name;
         session.user.email = token.email;
       }

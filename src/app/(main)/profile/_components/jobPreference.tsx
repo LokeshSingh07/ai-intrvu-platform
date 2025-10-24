@@ -50,12 +50,12 @@ const JobPreference = () => {
             <Briefcase className="h-5 w-5 mr-2" />
                   Job Preferences
             </CardTitle>
-            <CardDescription>Select roles and industries you're interested in</CardDescription>
+            <CardDescription>Select roles and industries you&apos;re interested in</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
             <div>
                 <Label className="text-base font-medium">Target Roles</Label>
-                <p className="text-sm text-gray-600 mb-3">Choose the positions you're preparing for</p>
+                <p className="text-sm text-gray-600 mb-3">Choose the positions you&apos;re preparing for</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                     {selectedRoles.map((role) => (
                       <Badge key={role} variant="default" className="px-3 py-1">
@@ -83,7 +83,7 @@ const JobPreference = () => {
 
             <div>
                 <Label className="text-base font-medium">Industries</Label>
-                <p className="text-sm text-gray-600 mb-3">Select industries you're targeting</p>
+                <p className="text-sm text-gray-600 mb-3">Select industries you&apos;re targeting</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                     {selectedIndustries.map((industry) => (
                     <Badge key={industry} variant="secondary" className="px-3 py-1">

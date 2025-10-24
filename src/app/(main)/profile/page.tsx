@@ -22,13 +22,15 @@ const Profile = () => {
 
   
 
-  if (status === "loading") return <Loader/>;
-  if (!session) {
-    useEffect(() => {
-      router.push('/login');
-    }, []);
-    return null;
-  }
+  useEffect(() => {
+    if (status !== "loading" && !session) {
+      router.push("/login");
+    }
+  }, [status, session, router]);
+
+  if (status === "loading") return <Loader />;
+
+  if (!session) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -45,7 +47,7 @@ const Profile = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Personal Information, RESUME, Jobpreference */}
-            <ProfileInfo profileInfo={session?.user} />
+            <ProfileInfo profileInfo={session?.user } />
 
             <Resume/>
 

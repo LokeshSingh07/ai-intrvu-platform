@@ -27,7 +27,7 @@ export async function dashboardStats(){
 
         // fetch dashboard stats
         const totalInterviews = await prisma.interviewSession.count({
-            where: {userId: session?.user.id}
+            where: {userId: session?.user?.id}
         })
 
         const recentInterviews = await prisma.interviewSession.findMany({
