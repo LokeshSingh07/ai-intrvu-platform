@@ -13,15 +13,14 @@ import {
 
 
 export const InterviewSetupSchema = z.object({
-    interviewtype: z.nativeEnum(InterviewType),
-    DifficultyLevel:z.nativeEnum(DifficultyLevel),
+    interviewType: z.nativeEnum(InterviewType),
+    difficultyLevel:z.nativeEnum(DifficultyLevel),
     duration: z.nativeEnum(Duration),
     interviewMode: z.nativeEnum(InterviewMode),
     jobPosition: z.nativeEnum(JobPosition),
     jobDescription: z.string(),
     experienceLevel: z.nativeEnum(ExperienceLevel),
     techStack: z.array(z.string()).min(1),
-    focusArea: z.nativeEnum(FocusArea).optional(),
     targetCompanySize: z.nativeEnum(CompanySize).optional()
 
 })

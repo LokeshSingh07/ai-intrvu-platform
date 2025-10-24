@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -17,54 +17,61 @@ datasource db {
 
 // ====================================================================================
 enum FocusArea {
-  FRONTEND
-  BACKEND
-  TESTER
-  SYSTEM_DESIGN     @map("SYSTEM DESIGN")
-  DSA
+  frontend
+  backend
+  tester
+  system_design
+  dsa
 }
+
 enum CompanySize {
-  STARTUP
-  SME
-  ENTERPRISE
+  startup
+  small
+  enterprise
 }
+
 enum ExperienceLevel {
-  JUNIOR
-  MID
-  SENIOR
-  LEAD
+  junior
+  mid
+  senior
+  lead
 }
+
 enum InterviewType { 
-  BEHAVIORAL        @map("BEHAVIORAL")
-  TECHNICAL         @map("TECHNICAL")
-  SYSTEM_DESIGN     @map("SYSTEM DESIGN")
+  behavioral
+  technical
+  system_design
 } 
+
 enum DifficultyLevel { 
-  EASY
-  MEDIUM
-  HARD
+  easy
+  medium
+  hard
 }
+
 enum Duration {
-  MIN_15   @map("15 Minutes")
-  MIN_30   @map("30 Minutes")
-  MIN_45   @map("45 Minutes")
-  MIN_60   @map("60 Minutes")
-  MIN_90   @map("90 Minutes")
-  MIN_120  @map("120 Minutes")
+  MIN_15   @map("15")
+  MIN_30   @map("30")
+  MIN_45   @map("45")
+  MIN_60   @map("60")
+  MIN_90   @map("90")
+  MIN_120  @map("120")
 }
+
 enum InterviewMode {
-  TEXT_CHAT @map("textChat")
-  VOICE     @map("voice")
-  VIDEO     @map("video")
+  text_chat
+  voice
+  video
 }
+
 enum JobPosition {
-  FRONTEND_DEVELOPER   @map("Frontend Developer")
-  BACKEND_DEVELOPER    @map("Backend Developer")
-  FULLSTACK_DEVELOPER  @map("Fullstack Developer")
-  TESTER               @map("Tester")
-  SYSTEM_DESIGNER      @map("System Designer")
-  DATA_SCIENTIST       @map("Data Scientist")
-  DEVOPS_ENGINEER      @map("DevOps Engineer")
+  frontend_developer
+  backend_developer
+  fullstack_developer
+  tester
+  system_designer
+  data_scientist
+  devops_engineer
 }
 
 
@@ -74,8 +81,7 @@ enum JobPosition {
 
 model User{
   id                        String          @id       @default(uuid())
-  firstName                 String
-  lastName                  String
+  fullName                  String
   email                     String          @unique
   password                  String
   bio                       String?
@@ -98,7 +104,6 @@ model User{
 
 model InterviewSession{
   id                        String          @id       @default(uuid())
-  sessionId                 String
   userId                    String
   user                      User            @relation(fields: [userId], references: [id])
   interviewType             InterviewType
@@ -126,7 +131,6 @@ model Question{
   correctAnswer             String
   userAnswer                String 
   feedback                  String
-  
 }
 
 

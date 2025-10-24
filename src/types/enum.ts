@@ -1,61 +1,59 @@
 // types/interview.ts
 
 export enum FocusArea {
-  FRONTEND = "FRONTEND",
-  BACKEND = "BACKEND",
-  TESTER = "TESTER",
-  SYSTEM_DESIGN = "SYSTEM_DESIGN",
-  DSA = "DSA",
+  FRONTEND = "frontend",
+  BACKEND = "backend",
+  TESTER = "tester",
+  SYSTEM_DESIGN = "system_design",
+  DSA = "dsa",
 }
 
 export enum CompanySize {
-  STARTUP = "STARTUP",
-  SME = "SME",
-  ENTERPRISE = "ENTERPRISE",
+  STARTUP = "startup",
+  SMALL = "small",
+  ENTERPRISE = "enterprise",
 }
 
 export enum ExperienceLevel {
-  JUNIOR = "JUNIOR",
-  MID = "MID",
-  SENIOR = "SENIOR",
-  LEAD = "LEAD",
+  JUNIOR = "junior",
+  MID = "mid",
+  SENIOR = "senior",
+  LEAD = "lead",
 }
 
 export enum InterviewType {
-  BEHAVIORAL = "BEHAVIORAL",
-  TECHNICAL = "TECHNICAL",
-  SYSTEM_DESIGN = "SYSTEM_DESIGN",
+  BEHAVIORAL = "behavioral",
+  TECHNICAL = "technical",
+  SYSTEM_DESIGN = "system_design",
 }
 
 export enum DifficultyLevel {
-  EASY = "EASY",
-  MEDIUM = "MEDIUM",
-  HARD = "HARD",
+  EASY = "easy",
+  MEDIUM = "medium",
+  HARD = "hard",
 }
 
 export enum Duration {
-  MIN_15 = "15 Minutes",
-  MIN_30 = "30 Minutes",
-  MIN_45 = "45 Minutes",
-  MIN_60 = "60 Minutes",
-  MIN_90 = "90 Minutes",
-  MIN_120 = "120 Minutes",
+  MIN_15 = 15,
+  MIN_30 = 30,
+  MIN_45 = 45,
+  MIN_60 = 60,
+  MIN_90 = 90,
+  MIN_120 = 120,
 }
 
 export enum InterviewMode {
-  TEXT_CHAT = "textChat",
+  TEXT_CHAT = "text_chat",
   VOICE = "voice",
   VIDEO = "video",
 }
 
 export enum JobPosition {
-  FRONTEND_DEVELOPER = "Frontend Developer",
-  BACKEND_DEVELOPER = "Backend Developer",
-  FULLSTACK_DEVELOPER = "Fullstack Developer",
-  TESTER = "Tester",
-  SYSTEM_DESIGNER = "System Designer",
-  DATA_SCIENTIST = "Data Scientist",
-  DEVOPS_ENGINEER = "DevOps Engineer",
+  FRONTEND_DEVELOPER = "frontend_developer",
+  BACKEND_DEVELOPER = "backend_developer",
+  FULLSTACK_DEVELOPER = "fullstack_developer",
+  TESTER = "tester",
+  SYSTEM_DESIGNER = "system_designer",
+  DATA_SCIENTIST = "data_scientist",
+  DEVOPS_ENGINEER = "devops_engineer",
 }
-
-
