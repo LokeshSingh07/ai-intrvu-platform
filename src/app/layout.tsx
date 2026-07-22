@@ -6,6 +6,8 @@ import NextAuthProvider from "@/context/AuthProvider";
 import ClientWrapper from "@/context/ClentWrapper";
 
 
+export const dynamic = "force-dynamic";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
