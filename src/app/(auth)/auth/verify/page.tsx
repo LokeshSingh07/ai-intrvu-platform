@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import VerifyClient from "./verifyClient";
 
+export const dynamic = "force-dynamic";
+
 export default function VerifyPage() {
   return (
     <Suspense
