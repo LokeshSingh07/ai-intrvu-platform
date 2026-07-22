@@ -12,8 +12,7 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:prod": "prisma migrate deploy",
     "generate": "prisma generate",
-    "studio": "prisma studio",
-    // "prepare": "husky install"
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
