@@ -10,7 +10,7 @@ export default function NotFound() {
         Page not found
       </h1>
       <p className="nf-body mt-4 text-lg text-[#6B7280] max-w-md">
-        The page you're looking for doesn't exist or may have moved.
+        The page you&apos;re looking for doesn&apos;t exist or may have moved.
       </p>
       <Link href="/">
         <Button className="nf-body h-12 px-6 w-fit mt-8 rounded-lg bg-[#12151B] hover:bg-[#1E222B] text-white font-semibold">

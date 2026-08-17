@@ -78,7 +78,7 @@ const Hero = () => {
 
             <p className="hero-body text-lg text-[#4B5160] mb-10 max-w-md leading-relaxed fade-up" style={{ animationDelay: "160ms" }}>
               A voice-driven interview partner that asks real questions for the
-              role you're going for, and tells you exactly where you lost the room.
+              role you&apos;re going for, and tells you exactly where you lost the room.
             </p>
 
             <div className="flex items-center gap-6 mb-12 fade-up" style={{ animationDelay: "240ms" }}>

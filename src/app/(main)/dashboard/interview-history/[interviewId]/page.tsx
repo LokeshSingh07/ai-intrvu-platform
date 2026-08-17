@@ -62,7 +62,7 @@ const InterviewReport = () => {
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: `${interview?.interviewType || "Interview"} Report - ${new Date(interview?.createdAt || "").toLocaleDateString()}`,
-    // @ts-ignore
+    // @ts-expect-error
     onBeforeGetContent: () => {
       setIsExporting(true);
       toast.loading("Generating your PDF report...", { id: "pdf" });

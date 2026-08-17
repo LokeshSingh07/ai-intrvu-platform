@@ -30,7 +30,7 @@ export default function LiveInterview() {
   const { data: session } = useSession();
 
   const interviewData = useSelector((state: RootState) => state.interview);
-  // @ts-ignore
+  // @ts-expect-error
   const interviewSessionId = interviewData?.interviewData?.interview?.id;
 
   const [isSpeaking, setIsSpeaking] = useState(false);
