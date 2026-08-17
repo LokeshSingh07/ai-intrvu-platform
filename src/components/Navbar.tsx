@@ -31,43 +31,52 @@ const Navbar = () => {
 
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-[#FAF8F4]/90 backdrop-blur-sm border-b border-[#12151B]/10 sticky top-0 z-50">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .nav-display { font-family: 'Space Grotesk', sans-serif; }
+        .nav-body { font-family: 'IBM Plex Sans', sans-serif; }
+      `}</style>
+
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-blue-600">{platformName}</Link>
+        <Link href="/" className="nav-display flex items-center gap-2 text-xl font-bold text-[#12151B]">
+          <span className="w-2 h-2 rounded-full bg-[#35D0BA]" />
+          {platformName}
+        </Link>
 
 
         {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden md:flex items-center gap-3">
           {
             isLoggedIn ? 
             <>
             <Link href={"/dashboard"}>
-              <Button className="ml-4" variant={"gradient"}>
+              <Button className="nav-body bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg">
                 Dashboard
               </Button>
             </Link> 
             <Button 
               variant={"link"}
               onClick={handleLogout}
+              className="nav-body text-[#6B7280] hover:text-[#12151B]"
             >
               <LogOut className="mr-2 h-4 w-4" /> Logout
             </Button> 
             </> : 
           (
-            <div>        
+            <>
               <Link href={"/auth"}>
-                <Button className="ml-4" variant={"link"}>
-                  Sign In
+                <Button className="nav-body text-[#12151B] hover:text-[#3E63DD]" variant={"link"}>
+                  Sign in
                 </Button>
               </Link>
               <Link href={"/auth"}>
-                <Button variant={"gradient"}>
-                  Get Started
+                <Button className="nav-body bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg">
+                  Get started
                 </Button>
               </Link>
-
-            </div>
+            </>
           )
           }
         </nav>
@@ -78,7 +87,7 @@ const Navbar = () => {
           onClick={toggleMenu}
           aria-label="Toggle Menu"
         >
-          {isOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
+          {isOpen ? <X className="w-6 h-6 text-[#12151B]" /> : <Menu className="w-6 h-6 text-[#12151B]" />}
         </button>
       </div>
 
@@ -86,20 +95,20 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white shadow-md">
-          <ul className="flex flex-col gap-4 p-6">
+        <div className="md:hidden bg-[#FAF8F4] border-t border-[#12151B]/10">
+          <ul className="flex flex-col gap-3 p-6">
            {isLoggedIn ? (
               <>
                 <li>
                   <Link href="/dashboard" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full" variant="secondary">
+                    <Button className="nav-body w-full bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg">
                       Dashboard
                     </Button>
                   </Link>
                 </li>
                 <li>
                   <Button
-                    className="w-full border-2"
+                    className="nav-body w-full border border-[#12151B]/15 text-[#12151B] rounded-lg"
                     variant="outline"
                     onClick={() => {
                       setIsOpen(false);
@@ -114,17 +123,17 @@ const Navbar = () => {
               <>
                 <li>
                   <Link href="/auth" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full" variant="secondary">
-                      Sign In
+                    <Button className="nav-body w-full border border-[#12151B]/15 text-[#12151B] rounded-lg" variant="outline">
+                      Sign in
                     </Button>
                   </Link>
                 </li>
                 <li>
                   <Link href="/auth" onClick={() => setIsOpen(false)}>
                     <Button
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      className="nav-body w-full bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg"
                     >
-                      Get Started
+                      Get started
                     </Button>
                   </Link>
                 </li>

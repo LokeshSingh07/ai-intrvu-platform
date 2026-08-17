@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
-import { Loader2, Lock, Mail, User } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, Mail, User } from 'lucide-react';
 import z from 'zod';
 import { signIn, useSession } from 'next-auth/react';
 import { createAccount } from '@/actions/auth';
@@ -25,6 +25,7 @@ import { createAccount } from '@/actions/auth';
 
 const SignUp = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const router = useRouter()
     const { status, update } = useSession();
 
@@ -75,20 +76,20 @@ const SignUp = () => {
   return (
     <div>
         <Form {...register}>
-            <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-6">
                 {/* fullname */}
                 <FormField
                     control={register.control}
                     name="fullName"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Full Name</FormLabel>
+                            <FormLabel className="auth-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Full name</FormLabel>
                             <FormControl>
                                 <div className='relative'>
-                                    <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                    <Input 
-                                        placeholder="Enter your full name"
-                                        className='pl-10'
+                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8F9C]" />
+                                    <Input
+                                        placeholder="Jordan Lee"
+                                        className='auth-body pl-10 h-11 rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0'
                                         {...field}
                                     />
                                 </div>
@@ -105,13 +106,13 @@ const SignUp = () => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel className="auth-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Email</FormLabel>
                             <FormControl>
                                 <div className='relative'>
-                                    <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                    <Input 
-                                        placeholder="Enter you email address"
-                                        className='pl-10'
+                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8F9C]" />
+                                    <Input
+                                        placeholder="you@email.com"
+                                        className='auth-body pl-10 h-11 rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0'
                                         {...field}
                                     />
                                 </div>
@@ -127,16 +128,28 @@ const SignUp = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel className="auth-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Password</FormLabel>
                             <FormControl>
                                 <div className='relative'>
-                                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                    <Input 
-                                        placeholder="Enter your password" 
-                                        className='pl-10'
-                                        type='password'
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8F9C]" />
+                                    <Input
+                                        placeholder="Create a password"
+                                        type={showPassword ? "text" : "password"}
+                                        className='auth-body pl-10 pr-10 h-11 rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0'
                                         {...field}
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                        className='absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8F9C] hover:text-[#12151B] transition-colors'
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? (
+                                            <EyeOff className="h-4 w-4" />
+                                        ) : (
+                                            <Eye className="h-4 w-4" />
+                                        )}
+                                    </button>
                                 </div>
                             </FormControl>
                             <FormMessage />
@@ -146,13 +159,17 @@ const SignUp = () => {
 
 
 
-                <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="auth-body w-full h-11 bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg font-medium"
+                >
                     {
                         isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Creating your account...
                         </>
-                        ) : ("Create Account")
+                        ) : ("Create account")
                     }
                 </Button>
             </form>

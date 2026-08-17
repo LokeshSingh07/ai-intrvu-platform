@@ -66,39 +66,50 @@ const Dashboard = () => {
 
 
 
+  const fontImports = (
+    <style jsx global>{`
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+      .dash-display { font-family: 'Space Grotesk', sans-serif; }
+      .dash-body { font-family: 'IBM Plex Sans', sans-serif; }
+      .dash-mono { font-family: 'IBM Plex Mono', monospace; }
+    `}</style>
+  );
 
 
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="flex flex-col items-center">
-          <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
-          <p className="text-gray-600 text-sm">Loading your dashboard...</p>
-        </div>
+      <div className="flex flex-col items-center justify-center gap-3 h-screen bg-[#FAF8F4]">
+        {fontImports}
+        <Loader2 className="w-8 h-8 text-[#12151B] animate-spin" strokeWidth={1.75} />
+        <p className="dash-mono text-xs tracking-wide uppercase text-[#8A8F9C]">Loading your dashboard</p>
       </div>
     );
   }
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#FAF8F4]">
+      {fontImports}
+
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 sm:px-6 py-4">
+      <div className="bg-white border-b border-[#12151B]/10">
+        <div className="container mx-auto px-4 sm:px-6 py-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             
             {/* Left: Avatar + Welcome */}
             <div className="flex items-center space-x-4">
-              <Avatar className="h-10 w-10">
+              <Avatar className="h-10 w-10 border border-[#12151B]/10">
                 <AvatarImage src="/placeholder.svg" />
-                <AvatarFallback>{session?.user?.name?.split("")[0] || "L"}</AvatarFallback>
+                <AvatarFallback className="dash-display bg-[#12151B] text-white">
+                  {session?.user?.name?.split("")[0] || "L"}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
+                <h1 className="dash-display text-lg sm:text-xl font-semibold text-[#12151B]">
                   Welcome back, {session?.user?.name}
                 </h1>
-                <p className="text-xs sm:text-sm text-gray-600">
+                <p className="dash-body text-xs sm:text-sm text-[#6B7280]">
                   Ready to ace your next interview?
                 </p>
               </div>
@@ -108,15 +119,15 @@ const Dashboard = () => {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               <Button
                 onClick={() => router.push("/dashboard/interview-setup")}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 h-10 sm:h-12 flex items-center justify-center"
+                className="dash-body bg-[#12151B] hover:bg-[#1E222B] text-white h-10 sm:h-12 rounded-lg flex items-center justify-center"
               >
                 <Play className="w-4 h-4 mr-2" />
-                Start Interview
+                Start interview
               </Button>
 
               <Button
                 variant="outline"
-                className="border-2 h-10 sm:h-12"
+                className="dash-body border border-[#12151B]/15 h-10 sm:h-12 rounded-lg text-[#12151B]"
                 onClick={async () => {
                   await signOut({ redirect: false });
                   setTimeout(() => {
@@ -140,64 +151,70 @@ const Dashboard = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card>
+              <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Interviews</CardTitle>
-                  <Target className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="dash-mono text-[11px] tracking-wide uppercase text-[#6B7280] font-medium">Total interviews</CardTitle>
+                  <Target className="h-4 w-4 text-[#3E63DD]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats?.totalInterviewCount}</div>
-                  <p className="text-xs text-muted-foreground">+3 from last week</p>
+                  <div className="dash-display text-2xl font-bold text-[#12151B]">{stats?.totalInterviewCount}</div>
+                  <p className="dash-body text-xs text-[#8A8F9C]">+3 from last week</p>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Accuracy</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="dash-mono text-[11px] tracking-wide uppercase text-[#6B7280] font-medium">Accuracy</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-[#3E63DD]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats?.accuracy}%</div>
-                  <p className="text-xs text-muted-foreground">+5% from last month</p>
+                  <div className="dash-display text-2xl font-bold text-[#12151B]">{stats?.accuracy}%</div>
+                  <p className="dash-body text-xs text-[#8A8F9C]">+5% from last month</p>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Rating</CardTitle>
-                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="dash-mono text-[11px] tracking-wide uppercase text-[#6B7280] font-medium">Rating</CardTitle>
+                  <Clock className="h-4 w-4 text-[#3E63DD]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats?.rating}</div>
-                  <p className="text-xs text-muted-foreground">This week</p>
+                  <div className="dash-display text-2xl font-bold text-[#12151B]">{stats?.rating}</div>
+                  <p className="dash-body text-xs text-[#8A8F9C]">This week</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Recent Activity */}
-            <Card>
+            <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
               <CardHeader>
-                <CardTitle>Recent Interviews</CardTitle>
-                <CardDescription>Your latest practice sessions</CardDescription>
+                <CardTitle className="dash-display text-[#12151B]">Recent interviews</CardTitle>
+                <CardDescription className="dash-body text-[#6B7280]">Your latest practice sessions</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {stats?.recentInterviews?.map((interview) => (
-                    <div key={interview.id} className="p-4 border rounded-lg">
+                    <div key={interview.id} className="p-4 border border-[#12151B]/10 rounded-lg hover:bg-[#FAF8F4] transition-colors">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-3">
-                          <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
-                            <Play className="h-5 w-5 text-primary" />
+                          <div className="h-10 w-10 bg-[#3E63DD]/10 rounded-full flex items-center justify-center">
+                            <Play className="h-4 w-4 text-[#3E63DD]" />
                           </div>
                           <div>
-                            <h3 className="font-medium capitalize">{interview?.interviewType} Interview</h3>
-                            <p className="text-sm text-muted-foreground">{formatDate(interview?.createdAt)} • {interview?.duration.split("_")[1]} min</p>
+                            <h3 className="dash-display font-medium capitalize text-[#12151B]">{interview?.interviewType} interview</h3>
+                            <p className="dash-mono text-xs text-[#8A8F9C]">{formatDate(interview?.createdAt)} · {interview?.duration.split("_")[1]} min</p>
                           </div>
                         </div>
-                        <Badge variant={interview?.rating >= 8 ? "default" : "secondary"}>
+                        <Badge
+                          className={`dash-mono text-xs ${
+                            interview?.rating >= 8
+                              ? "bg-[#35D0BA] text-[#12151B] hover:bg-[#35D0BA]"
+                              : "bg-[#F1EFEA] text-[#6B7280] hover:bg-[#F1EFEA]"
+                          }`}
+                        >
                           {(interview?.rating * 10) || 0}%
                         </Badge>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-sm text-muted-foreground">{interview?.summary || "no feedback available"}</p>
+                        <p className="dash-body text-sm text-[#6B7280]">{interview?.summary || "no feedback available"}</p>
                         <div className="flex flex-wrap gap-2">
                           {/* {interview?.strengths.length > 0 && interview?.strengths?.map((strength, index) => (
                             <Badge key={index} variant="outline" className="text-green-600 border-green-200">
@@ -211,7 +228,7 @@ const Dashboard = () => {
                 </div>
                 <div className="mt-4">
                   <Link href="/dashboard/interview-history">
-                    <Button variant="outline" className="w-full">View All Interviews</Button>
+                    <Button variant="outline" className="dash-body w-full border border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg">View all interviews</Button>
                   </Link>
                 </div>
               </CardContent>

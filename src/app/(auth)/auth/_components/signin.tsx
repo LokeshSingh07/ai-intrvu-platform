@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
-import { Loader2, Lock, Mail, Unlock } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
 import z from 'zod';
 import { SignInSchema, SignInType } from '@/schema/SignInSchema';
 import { signIn, useSession } from 'next-auth/react';
@@ -85,20 +85,20 @@ const SignUp = () => {
   return (
     <div>
         <Form {...register}>
-            <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-6">
                 {/* Email */}
                 <FormField
                     control={register.control}
                     name="identifier"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel className="auth-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Email</FormLabel>
                             <FormControl>
                                 <div className='relative'>
-                                    <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                    <Input 
-                                        placeholder="Enter you email address" 
-                                        className='pl-10'
+                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8F9C]" />
+                                    <Input
+                                        placeholder="you@email.com"
+                                        className='auth-body pl-10 h-11 rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0'
                                         {...field}
                                     />
                                 </div>
@@ -114,27 +114,28 @@ const SignUp = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel className="auth-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Password</FormLabel>
                             <FormControl>
                                 <div className='relative'>
-                                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                                    <Input 
-                                        placeholder="Enter your password" 
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8F9C]" />
+                                    <Input
+                                        placeholder="Enter your password"
                                         type={`${showPassword ? "text" : "password"}`}
-                                        className='pl-10'
+                                        className='auth-body pl-10 pr-10 h-11 rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0'
                                         {...field}
                                     />
-                                    <Button 
+                                    <button
                                         type="button"
                                         onClick={()=> setShowPassword((prev) => !prev)}
-                                        className='absolute right-3 top-2 h-5 w-5 bg-gray-300 hover:bg-gray-50'
-                                    > 
+                                        className='absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8F9C] hover:text-[#12151B] transition-colors'
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
                                         {showPassword ? (
-                                            <Unlock className="h-5 w-5 text-gray-400" />
+                                            <EyeOff className="h-4 w-4" />
                                         ) : (
-                                            <Lock className="h-5 w-5 text-gray-400" />
+                                            <Eye className="h-4 w-4" />
                                         )}
-                                    </Button>
+                                    </button>
                                 </div>
                             </FormControl>
                             <FormMessage />
@@ -144,7 +145,11 @@ const SignUp = () => {
 
 
 
-                <Button type="submit" className="w-full" variant={"gradient"}>
+                <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="auth-body w-full h-11 bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg font-medium"
+                >
                     {
                         isSubmitting ? (
                         <>

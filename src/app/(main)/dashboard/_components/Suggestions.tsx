@@ -10,27 +10,27 @@ const Suggestions = () => {
 
 
   const suggestions = [
-    { title: "Practice STAR Method", icon: Star, color: "bg-yellow-500" },
-    { title: "Technical Questions", icon: BookOpen, color: "bg-blue-500" },
-    { title: "Behavioral Skills", icon: Users, color: "bg-green-500" },
-    { title: "System Design", icon: Target, color: "bg-purple-500" },
+    { title: "Practice the STAR method", icon: Star },
+    { title: "Technical questions", icon: BookOpen },
+    { title: "Behavioral skills", icon: Users },
+    { title: "System design", icon: Target },
   ];
 
 
 
   return (
-    <Card>
+    <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
         <CardHeader>
-            <CardTitle>Recommended for You</CardTitle>
-            <CardDescription>Based on your recent performance</CardDescription>
+            <CardTitle className="dash-display text-[#12151B]">Recommended for you</CardTitle>
+            <CardDescription className="dash-body text-[#6B7280]">Based on your recent performance</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-2">
             {suggestions.map((suggestion, index) => (
-                <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div className={`h-8 w-8 ${suggestion.color} rounded-full flex items-center justify-center`}>
-                      <suggestion.icon className="h-4 w-4 text-white" />
+                <div key={index} className="flex items-center space-x-3 p-3 border border-[#12151B]/10 rounded-lg hover:bg-[#FAF8F4] transition-colors cursor-pointer">
+                    <div className="h-8 w-8 bg-[#3E63DD]/10 rounded-full flex items-center justify-center shrink-0">
+                      <suggestion.icon className="h-4 w-4 text-[#3E63DD]" strokeWidth={1.75} />
                     </div>
-                    <span className="text-sm font-medium">{suggestion.title}</span>
+                    <span className="dash-body text-sm font-medium text-[#12151B]">{suggestion.title}</span>
                   </div>
             ))}
         </CardContent>
@@ -39,5 +39,3 @@ const Suggestions = () => {
 };
 
 export default Suggestions;
-
-

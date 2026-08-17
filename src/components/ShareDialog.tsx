@@ -84,58 +84,89 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Link2 className="w-5 h-5" />
-            Share Report
+      <DialogContent className="sm:max-w-lg rounded-2xl border border-[#12151B]/10 p-0 overflow-hidden">
+        <style jsx global>{`
+          @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+          .share-display { font-family: 'Space Grotesk', sans-serif; }
+          .share-body { font-family: 'IBM Plex Sans', sans-serif; }
+          .share-mono { font-family: 'IBM Plex Mono', monospace; }
+        `}</style>
+
+        <DialogHeader className="px-6 pt-6">
+          <DialogTitle className="share-display flex items-center gap-2 text-[#12151B] text-lg font-semibold">
+            <Link2 className="w-4 h-4 text-[#3E63DD]" />
+            Share report
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="share-body text-[#6B7280]">
             Share your interview performance with recruiters, mentors, or friends.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="space-y-6 px-6 pb-6 pt-2">
           {/* Shareable Link */}
           <div className="space-y-2">
-            <Label htmlFor="share-link">Direct Link</Label>
+            <Label htmlFor="share-link" className="share-mono text-[11px] tracking-wide uppercase text-[#6B7280]">
+              Direct link
+            </Label>
             <div className="flex gap-2">
               <Input 
                 id="share-link" 
                 value={shareUrl} 
                 readOnly 
-                className="flex-1 font-mono text-sm"
+                className="share-mono flex-1 text-sm h-10 rounded-lg border-[#12151B]/15 bg-[#FAF8F4] text-[#374151] focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0"
               />
-              <Button onClick={copyToClipboard} size="icon" variant="outline">
-                {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+              <Button
+                onClick={copyToClipboard}
+                size="icon"
+                variant="outline"
+                className="h-10 w-10 shrink-0 rounded-lg border-[#12151B]/15"
+              >
+                {copied ? <Check className="w-4 h-4 text-[#35D0BA]" /> : <Copy className="w-4 h-4 text-[#6B7280]" />}
               </Button>
             </div>
           </div>
 
           {/* Social Sharing */}
           <div className="space-y-3">
-            <Label>Share via</Label>
+            <Label className="share-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Share via</Label>
             <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" onClick={shareViaEmail}>
-                <Mail className="w-4 h-4 mr-2" />
+              <Button
+                variant="outline"
+                onClick={shareViaEmail}
+                className="share-body justify-start border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
+              >
+                <Mail className="w-4 h-4 mr-2 text-[#6B7280]" />
                 Email
               </Button>
-              <Button variant="outline" onClick={shareToLinkedIn}>
-                <Linkedin className="w-4 h-4 mr-2" />
+              <Button
+                variant="outline"
+                onClick={shareToLinkedIn}
+                className="share-body justify-start border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
+              >
+                <Linkedin className="w-4 h-4 mr-2 text-[#6B7280]" />
                 LinkedIn
               </Button>
-              <Button variant="outline" onClick={shareToTwitter}>
-                <Twitter className="w-4 h-4 mr-2" />
+              <Button
+                variant="outline"
+                onClick={shareToTwitter}
+                className="share-body justify-start border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
+              >
+                <Twitter className="w-4 h-4 mr-2 text-[#6B7280]" />
                 Twitter
               </Button>
-              <Button variant="outline" onClick={downloadPdf} disabled={!pdfBlob}>
-                <Download className="w-4 h-4 mr-2" />
+              <Button
+                variant="outline"
+                onClick={downloadPdf}
+                disabled={!pdfBlob}
+                className="share-body justify-start border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg disabled:opacity-40"
+              >
+                <Download className="w-4 h-4 mr-2 text-[#6B7280]" />
                 Download PDF
               </Button>
             </div>
           </div>
 
-          <div className="text-xs text-muted-foreground text-center">
+          <div className="share-mono text-[11px] text-[#8A8F9C] text-center tracking-wide">
             Anyone with the link can view your report
           </div>
         </div>

@@ -138,15 +138,15 @@ const InterviewReport = () => {
 
 
   const getScoreColor = (score: number) => {
-      if (score >= 85) return "text-green-600";
-      if (score >= 70) return "text-yellow-600";
+      if (score >= 85) return "text-[#0F9E8A]";
+      if (score >= 70) return "text-amber-600";
       return "text-red-600";
   };
 
-  const getScoreBadge = (score: number) => {
-    if (score >= 85) return "default";
-    if (score >= 70) return "secondary";
-    return "destructive";
+  const getScoreBadgeClass = (score: number) => {
+    if (score >= 85) return "bg-[#35D0BA] text-[#12151B] hover:bg-[#35D0BA]";
+    if (score >= 70) return "bg-amber-100 text-amber-700 hover:bg-amber-100";
+    return "bg-red-100 text-red-700 hover:bg-red-100";
   };
 
 
@@ -154,19 +154,28 @@ const InterviewReport = () => {
 
   if (loading) {
       return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-          <div className="flex flex-col items-center">
-          <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
-          <p className="text-gray-600 text-sm">Loading your Report...</p>
-          </div>
+      <div className="flex flex-col items-center justify-center gap-3 h-screen bg-[#FAF8F4]">
+          <style jsx global>{`
+            @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+            .report-mono { font-family: 'IBM Plex Mono', monospace; }
+          `}</style>
+          <Loader2 className="w-8 h-8 text-[#12151B] animate-spin" strokeWidth={1.75} />
+          <p className="report-mono text-xs tracking-wide uppercase text-[#8A8F9C]">Loading your report</p>
       </div>
       );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#FAF8F4]">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .report-display { font-family: 'Space Grotesk', sans-serif; }
+        .report-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .report-mono { font-family: 'IBM Plex Mono', monospace; }
+      `}</style>
+
       {/* Header */}
-      <div className="border-b bg-card">
+      <div className="border-b border-[#12151B]/10 bg-white">
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             
@@ -174,17 +183,18 @@ const InterviewReport = () => {
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <div className="flex items-center space-x-4">
                 <Button variant="ghost" size="sm"
+                    className="report-body text-[#6B7280] hover:text-[#12151B]"
                     onClick={() => router.push('/dashboard/interview-history')}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to History
+                  Back to history
                 </Button>
               </div>
 
               <div className='pl-3'>  
-                <h1 className="text-lg sm:text-2xl font-bold">Interview Report Page</h1>
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  Detailed analysis of all your practice sessions
+                <h1 className="report-display text-lg sm:text-2xl font-bold text-[#12151B]">Interview report</h1>
+                <p className="report-body text-xs sm:text-sm text-[#6B7280]">
+                  Detailed analysis of this practice session
                 </p>
               </div>
             </div>
@@ -194,7 +204,7 @@ const InterviewReport = () => {
               <Button 
                 onClick={handlePrint} 
                 disabled={isExporting || loading}
-                className="relative"
+                className="report-body relative bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg"
               >
                 {isExporting ? (
                   <>
@@ -212,10 +222,10 @@ const InterviewReport = () => {
               <Button 
                 variant="outline" 
                 onClick={() => setShareDialogOpen(true)}
-                className="no-print"
+                className="report-body no-print border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
               >
                 <Share2 className="w-4 h-4 mr-2" />
-                Share Report
+                Share report
               </Button>
             </div>
           </div>
@@ -230,22 +240,22 @@ const InterviewReport = () => {
           <div ref={printRef} className="lg:col-span-2 space-y-8">
             <Tabs defaultValue="overview" className="space-y-6">
               <div className="w-full overflow-x-auto scrollbar-hide">
-                <TabsList className="inline-flex h-12 w-max min-w-full items-center justify-start rounded-lg bg-muted p-1 gap-3">
+                <TabsList className="report-body inline-flex h-12 w-max min-w-full items-center justify-start rounded-lg bg-[#F1EFEA] p-1 gap-1">
                   <TabsTrigger
                     value="overview"
-                    className="whitespace-nowrap rounded-md px-6 py-2 text-sm font-medium transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                    className="whitespace-nowrap rounded-md px-6 py-2 text-sm font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-[#12151B] data-[state=active]:shadow-sm"
                   >
                     Overview
                   </TabsTrigger>
                   <TabsTrigger
                     value="questions"
-                    className="whitespace-nowrap rounded-md px-6 py-2 text-sm font-medium transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                    className="whitespace-nowrap rounded-md px-6 py-2 text-sm font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-[#12151B] data-[state=active]:shadow-sm"
                   >
-                    Question Analysis
+                    Question analysis
                   </TabsTrigger>
                   <TabsTrigger
                     value="recommendations"
-                    className="whitespace-nowrap rounded-md px-6 py-2 text-sm font-medium transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                    className="whitespace-nowrap rounded-md px-6 py-2 text-sm font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-[#12151B] data-[state=active]:shadow-sm"
                   >
                     Recommendations
                   </TabsTrigger>
@@ -254,53 +264,53 @@ const InterviewReport = () => {
 
               <TabsContent value="overview" className="space-y-6">
                 {/* Overall Performance */}
-                <Card>
+                <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Target className="w-5 h-5" />
-                      Overall Performance
+                    <CardTitle className="report-display flex items-center gap-2 text-[#12151B]">
+                      <Target className="w-5 h-5 text-[#3E63DD]" />
+                      Overall performance
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-center">
-                      <div className={`text-4xl font-bold ${getScoreColor(Number(interview?.rating)*10 || 0)}`}>
+                      <div className={`report-display text-4xl font-bold ${getScoreColor(Number(interview?.rating)*10 || 0)}`}>
                         {Number(interview?.rating)*10 || 0}%
                       </div>
-                      <Badge variant={getScoreBadge(Number(interview?.rating) || 0)} className="mt-2">
-                        {(Number(interview?.rating) * 10) >= 85 ? "Excellent" : (Number(interview?.rating) * 10) >= 70 ? "Good" : "Needs Improvement"}
+                      <Badge className={`report-mono mt-2 text-xs ${getScoreBadgeClass(Number(interview?.rating)*10 || 0)}`}>
+                        {(Number(interview?.rating) * 10) >= 85 ? "Excellent" : (Number(interview?.rating) * 10) >= 70 ? "Good" : "Needs improvement"}
                       </Badge>
                     </div>
-                    <Separator />
-                    <p className="text-muted-foreground">{interview?.summary || ""}</p>
+                    <Separator className="bg-[#12151B]/10" />
+                    <p className="report-body text-[#6B7280]">{interview?.summary || ""}</p>
                   </CardContent>
                 </Card>
 
                 {/* Strengths and Improvements */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card>
+                  <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-green-600">
+                      <CardTitle className="report-display flex items-center gap-2 text-[#0F9E8A]">
                         <CheckCircle className="w-5 h-5" />
-                        Key Strengths
+                        Key strengths
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
                         {interview?.strengths?.map((strength: string, index:number) => (
                           <li key={index} className="flex items-start gap-2">
-                            <Star className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">{strength}</span>
+                            <Star className="w-4 h-4 text-[#35D0BA] mt-0.5 flex-shrink-0" />
+                            <span className="report-body text-sm text-[#374151]">{strength}</span>
                           </li>
                         ))}
                       </ul>
                     </CardContent>
                   </Card>
 
-                  <Card>
+                  <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-amber-600">
+                      <CardTitle className="report-display flex items-center gap-2 text-amber-600">
                         <AlertCircle className="w-5 h-5" />
-                        Areas for Improvement
+                        Areas for improvement
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -308,7 +318,7 @@ const InterviewReport = () => {
                         {interview?.improvements?.map((improvement:string, index:number) => (
                           <li key={index} className="flex items-start gap-2">
                             <TrendingUp className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">{improvement}</span>
+                            <span className="report-body text-sm text-[#374151]">{improvement}</span>
                           </li>
                         ))}
                       </ul>
@@ -319,40 +329,40 @@ const InterviewReport = () => {
 
               <TabsContent value="questions" className="space-y-6">
                 {interview?.answers.map((question, index) => (
-                  <Card key={question.id}>
+                  <Card key={question.id} className="border border-[#12151B]/10 rounded-xl shadow-none">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">Question {index + 1}</CardTitle>
-                        <Badge variant={getScoreBadge((Number(question?.rating) * 10) || 0)}>
+                        <CardTitle className="report-display text-lg text-[#12151B]">Question {index + 1}</CardTitle>
+                        <Badge className={`report-mono text-xs ${getScoreBadgeClass((Number(question?.rating) * 10) || 0)}`}>
                           {Number(question?.rating) * 10 || 0}%
                         </Badge>
                       </div>
-                      <CardDescription className="text-base font-medium">
+                      <CardDescription className="report-body text-base font-medium text-[#12151B]">
                         {question?.question}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h4 className="font-medium ">Your Response Summary</h4>
-                        <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                        <h4 className="report-mono text-[11px] tracking-wide uppercase text-[#6B7280] mb-1">Your response summary</h4>
+                        <p className="report-body text-sm text-[#6B7280] bg-[#FAF8F4] p-3 rounded-lg">
                           {question?.userAnswer || ""}
                         </p>
                       </div>
                       
                       <div>
-                        <h4 className="font-medium mb-1">Feedback</h4>
-                        <p className="text-sm">{question?.feedback}</p>
+                        <h4 className="report-mono text-[11px] tracking-wide uppercase text-[#6B7280] mb-1">Feedback</h4>
+                        <p className="report-body text-sm text-[#374151]">{question?.feedback}</p>
                       </div>
 
                       {/* Correct Answer Dropdown */}
                       <Collapsible>
-                        <CollapsibleTrigger className="flex items-center w-full text-sm font-medium text-blue-600 hover:underline">
+                        <CollapsibleTrigger className="report-body flex items-center w-full text-sm font-medium text-[#3E63DD] hover:underline">
                           {/* Show Correct Answer */}
-                          Show Suggested Answer
+                          Show suggested answer
                         </CollapsibleTrigger>
 
                         <CollapsibleContent>
-                          <p className="text-sm bg-blue-50 dark:bg-blue-900/30 border border-blue-300/40 p-3 mt-2 rounded-lg text-blue-600 dark:text-blue-300">
+                          <p className="report-body text-sm bg-[#3E63DD]/5 border border-[#3E63DD]/20 p-3 mt-2 rounded-lg text-[#3E63DD]">
                             {question?.correctAnswer || "No correct answer available."}
                           </p>
                         </CollapsibleContent>
@@ -360,19 +370,19 @@ const InterviewReport = () => {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <h5 className="text-sm font-medium text-green-600 mb-2">What you did well:</h5>
-                          <ul className="text-xs space-y-1">
+                          <h5 className="report-mono text-[11px] tracking-wide uppercase text-[#0F9E8A] mb-2">What you did well</h5>
+                          <ul className="report-body text-xs space-y-1 text-[#374151]">
                             {question?.strengths?.map((strength, idx) => (
                               <li key={idx} className="flex items-center gap-1">
-                                <CheckCircle className="w-3 h-3 text-green-500" />
+                                <CheckCircle className="w-3 h-3 text-[#35D0BA]" />
                                 {strength}
                               </li>
                             ))}
                           </ul>
                         </div>
                         <div>
-                          <h5 className="text-sm font-medium text-amber-600 mb-2">Areas to improve:</h5>
-                          <ul className="text-xs space-y-1">
+                          <h5 className="report-mono text-[11px] tracking-wide uppercase text-amber-600 mb-2">Areas to improve</h5>
+                          <ul className="report-body text-xs space-y-1 text-[#374151]">
                             {question?.improvements?.map((improvement, idx) => (
                               <li key={idx} className="flex items-center gap-1">
                                 <AlertCircle className="w-3 h-3 text-amber-500" />
@@ -389,18 +399,18 @@ const InterviewReport = () => {
 
               <TabsContent value="recommendations" className="space-y-6">
                 {recommendations.map((rec, index) => (
-                  <Card key={index}>
+                  <Card key={index} className="border border-[#12151B]/10 rounded-xl shadow-none">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Lightbulb className="w-5 h-5 text-yellow-500" />
+                      <CardTitle className="report-display flex items-center gap-2 text-[#12151B]">
+                        <Lightbulb className="w-5 h-5 text-[#3E63DD]" />
                         {rec.title}
                       </CardTitle>
-                      <CardDescription>{rec.description}</CardDescription>
+                      <CardDescription className="report-body text-[#6B7280]">{rec.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="bg-primary/5 p-4 rounded-lg">
-                        <h4 className="font-medium text-sm mb-2">Action Item:</h4>
-                        <p className="text-sm">{rec.action}</p>
+                      <div className="bg-[#3E63DD]/5 p-4 rounded-lg">
+                        <h4 className="report-mono text-[11px] tracking-wide uppercase text-[#6B7280] mb-2">Action item</h4>
+                        <p className="report-body text-sm text-[#374151]">{rec.action}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -414,71 +424,71 @@ const InterviewReport = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Session Details */}
-            <Card>
+            <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
               <CardHeader>
-                <CardTitle>Session Details</CardTitle>
+                <CardTitle className="report-display text-[#12151B]">Session details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm">{new Date(interview?.createdAt ?? "").toLocaleDateString() || ""}</span>
+                  <Calendar className="w-4 h-4 text-[#8A8F9C]" />
+                  <span className="report-body text-sm text-[#374151]">{new Date(interview?.createdAt ?? "").toLocaleDateString() || ""}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm">{interview?.duration.split("_")[1]} min</span>
+                  <Clock className="w-4 h-4 text-[#8A8F9C]" />
+                  <span className="report-body text-sm text-[#374151]">{interview?.duration.split("_")[1]} min</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Target className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm capitalize">{interview?.interviewType || ""} Interview</span>
+                  <Target className="w-4 h-4 text-[#8A8F9C]" />
+                  <span className="report-body text-sm capitalize text-[#374151]">{interview?.interviewType || ""} interview</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Quick Actions */}
-            <Card>
+            <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <CardTitle className="report-display text-[#12151B]">Quick actions</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2">
                 <Button 
                   variant="outline" 
-                  className="w-full justify-start"  
+                  className="report-body w-full justify-start border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
                   onClick={handlePrint} 
                   disabled={isExporting || loading}
                 >
-                  <Download className="w-4 h-4 mr-2" />
+                  <Download className="w-4 h-4 mr-2 text-[#6B7280]" />
                   {isExporting ? "Exporting..." : "Export as PDF"}
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="w-full justify-start no-print"
+                  className="report-body w-full justify-start no-print border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
                   onClick={() => setShareDialogOpen(true)}
                 >
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share Report
+                  <Share2 className="w-4 h-4 mr-2 text-[#6B7280]" />
+                  Share report
                 </Button>
-                <Button variant="outline" className="w-full justify-start"
+                <Button variant="outline" className="report-body w-full justify-start border-[#12151B]/15 text-[#12151B] hover:bg-[#FAF8F4] rounded-lg"
                   onClick={()=> router.push("/dashboard/interview-setup")}
                 >
-                  <Play className="w-4 h-4 mr-2" />
-                  Retake Interview
+                  <Play className="w-4 h-4 mr-2 text-[#6B7280]" />
+                  Retake interview
                 </Button>
               </CardContent>
             </Card>
 
             {/* Performance Trend */}
-            <Card>
+            <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
               <CardHeader>
-                <CardTitle>Your Progress</CardTitle>
-                <CardDescription>Compared to previous interviews</CardDescription>
+                <CardTitle className="report-display text-[#12151B]">Your progress</CardTitle>
+                <CardDescription className="report-body text-[#6B7280]">Compared to previous interviews</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <TrendingUp className="w-5 h-5 text-green-500" />
-                    <span className="text-lg font-bold text-green-600">+7%</span>
+                    <TrendingUp className="w-5 h-5 text-[#0F9E8A]" />
+                    <span className="report-display text-lg font-bold text-[#0F9E8A]">+7%</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Improvement from last session</p>
+                  <p className="report-body text-xs text-[#8A8F9C]">Improvement from last session</p>
                 </div>
               </CardContent>
             </Card>

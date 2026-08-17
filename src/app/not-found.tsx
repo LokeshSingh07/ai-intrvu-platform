@@ -3,23 +3,39 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link";
 
 export default function NotFound() {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center ">
-        <h1 className="text-6xl font-extrabold bg-gradient-to-r from-indigo-800 to-purple-400 bg-clip-text text-transparent animate-pulse">
-          404 
-        </h1>
-        <h2 className="mt-2 text-3xl font-semibold">Page Not Found</h2>
-        <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-300">
-          Oops! The page you are looking for does not exist.
-        </p>
-        <Link href='/'>
-            <Button
-              className={"h-12 px-4 w-fit mt-5 md:mt-10 rounded-full"}
-            >
-                Go to Home Page
-            </Button>
-        </Link>
-      </div>
-    );
-  }
-  
+  return (
+    <div className="nf-root flex h-screen flex-col items-center justify-center bg-[#FAF8F4] text-center px-6">
+      <span className="nf-mono text-xs tracking-[0.18em] uppercase text-[#3E63DD]">Error 404</span>
+      <h1 className="nf-display mt-2 text-6xl font-bold text-[#12151B]">
+        Page not found
+      </h1>
+      <p className="nf-body mt-4 text-lg text-[#6B7280] max-w-md">
+        The page you're looking for doesn't exist or may have moved.
+      </p>
+      <Link href="/">
+        <Button className="nf-body h-12 px-6 w-fit mt-8 rounded-lg bg-[#12151B] hover:bg-[#1E222B] text-white font-semibold">
+          Go to home page
+        </Button>
+      </Link>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .nf-display {
+          font-family: 'Space Grotesk', sans-serif;
+        }
+        .nf-body {
+          font-family: 'IBM Plex Sans', sans-serif;
+        }
+        .nf-mono {
+          font-family: 'IBM Plex Mono', monospace;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nf-root * {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}

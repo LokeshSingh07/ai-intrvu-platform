@@ -9,18 +9,9 @@ import SidebarProfile from './_components/Sidebar';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 
-
-
-
 const Profile = () => {
   const { data: session, status } = useSession();
-  console.log("Session data:", session);
   const router = useRouter();
-
-
-
-
-  
 
   useEffect(() => {
     if (status !== "loading" && !session) {
@@ -33,12 +24,12 @@ const Profile = () => {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="profile-root min-h-screen bg-[#FAF8F4]">
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="text-gray-600">Customize your interview experience</p>
+      <div className="bg-white border-b border-[#12151B]/10">
+        <div className="container mx-auto px-6 py-6">
+          <h1 className="profile-display text-2xl font-bold text-[#12151B]">Profile settings</h1>
+          <p className="profile-body text-[#6B7280]">Customize your interview experience</p>
         </div>
       </div>
 
@@ -46,18 +37,36 @@ const Profile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Personal Information, RESUME, Jobpreference */}
-            <ProfileInfo profileInfo={session?.user } />
+            <ProfileInfo profileInfo={session?.user} />
 
-            {/* <Resume/> */}
+            <Resume />
 
-            <JobPreference/>
+            <JobPreference />
           </div>
 
           {/* Sidebar */}
-          <SidebarProfile/>
+          <SidebarProfile />
         </div>
       </div>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .profile-display {
+          font-family: 'Space Grotesk', sans-serif;
+        }
+        .profile-body {
+          font-family: 'IBM Plex Sans', sans-serif;
+        }
+        .profile-mono {
+          font-family: 'IBM Plex Mono', monospace;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .profile-root * {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

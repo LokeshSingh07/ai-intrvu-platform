@@ -74,24 +74,31 @@ const InterviewHistory = () => {
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#FAF8F4]">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .hist-display { font-family: 'Space Grotesk', sans-serif; }
+        .hist-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .hist-mono { font-family: 'IBM Plex Mono', monospace; }
+      `}</style>
+
       {/* Header */}
-      <div className="border-b bg-card">
+      <div className="border-b border-[#12151B]/10 bg-white">
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             
             {/* Left: Back button + Title */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="flex items-center">
+                <Button variant="ghost" size="sm" className="hist-body flex items-center text-[#6B7280] hover:text-[#12151B]">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Dashboard
+                  Back to dashboard
                 </Button>
               </Link>
               
               <div className='pl-3'>
-                <h1 className="text-lg sm:text-2xl font-bold">Interview History & Reports</h1>
-                <p className="text-xs sm:text-sm text-muted-foreground">
+                <h1 className="hist-display text-lg sm:text-2xl font-bold text-[#12151B]">Interview history & reports</h1>
+                <p className="hist-body text-xs sm:text-sm text-[#6B7280]">
                   Detailed analysis of all your practice sessions
                 </p>
               </div>
@@ -100,40 +107,40 @@ const InterviewHistory = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-6 py-8 space-y-6">
         {/* Filters */}
-        <Card>
-          <CardContent className="">
+        <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
+          <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8F9C]" />
                   <Input
                     placeholder="Search interviews..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="hist-body pl-10 rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0"
                   />
                 </div>
               </div>
 
               <div className='flex justify-start items-center gap-2'>
                 <Select value={filterType} onValueChange={setFilterType}>
-                  <SelectTrigger className="w-48">
-                    <Filter className="w-4 h-4 mr-2" />
+                  <SelectTrigger className="hist-body w-48 rounded-lg border-[#12151B]/15">
+                    <Filter className="w-4 h-4 mr-2 text-[#8A8F9C]" />
                     <SelectValue placeholder="Filter by type" />
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="all">All types</SelectItem>
                     <SelectItem value="behavioral">Behavioral</SelectItem>
                     <SelectItem value="technical">Technical</SelectItem>
-                    <SelectItem value="system design">System Design</SelectItem>
+                    <SelectItem value="system design">System design</SelectItem>
                   </SelectContent>
                 </Select>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-48">
+                    <SelectTrigger className="hist-body w-48 rounded-lg border-[#12151B]/15">
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                   <SelectContent>
@@ -149,65 +156,73 @@ const InterviewHistory = () => {
         </Card>
 
         {/* Interview Table */}
-        <Card>
+        <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
           <CardHeader>
-            <CardTitle>All Interviews</CardTitle>
-            <CardDescription>Complete history of your practice sessions</CardDescription>
+            <CardTitle className="hist-display text-[#12151B]">All interviews</CardTitle>
+            <CardDescription className="hist-body text-[#6B7280]">Complete history of your practice sessions</CardDescription>
           </CardHeader>
           <CardContent>
             {isLoading ? (
               <div className="space-y-4">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="flex items-center justify-between space-x-4">
-                    <Skeleton className="h-8 w-8 rounded-full" />
-                    <Skeleton className="h-4 w-[200px]" />
-                    <Skeleton className="h-4 w-[100px]" />
-                    <Skeleton className="h-4 w-[50px]" />
-                    <Skeleton className="h-4 w-[80px]" />
-                    <Skeleton className="h-8 w-24 rounded-md" />
+                    <Skeleton className="h-8 w-8 rounded-full bg-[#12151B]/5" />
+                    <Skeleton className="h-4 w-[200px] bg-[#12151B]/5" />
+                    <Skeleton className="h-4 w-[100px] bg-[#12151B]/5" />
+                    <Skeleton className="h-4 w-[50px] bg-[#12151B]/5" />
+                    <Skeleton className="h-4 w-[80px] bg-[#12151B]/5" />
+                    <Skeleton className="h-8 w-24 rounded-md bg-[#12151B]/5" />
                   </div>
                 ))}
+              </div>
+            ) : sortedInterviews.length === 0 ? (
+              <div className="hist-body text-center py-12 text-[#8A8F9C] text-sm">
+                No interviews match your search or filter.
               </div>
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Interview</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead>Rating</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
+                  <TableRow className="border-[#12151B]/10 hover:bg-transparent">
+                    <TableHead className="hist-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Interview</TableHead>
+                    <TableHead className="hist-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Date</TableHead>
+                    <TableHead className="hist-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Duration</TableHead>
+                    <TableHead className="hist-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Rating</TableHead>
+                    <TableHead className="hist-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Status</TableHead>
+                    <TableHead className="hist-mono text-[11px] tracking-wide uppercase text-[#6B7280]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sortedInterviews.map((interview) => (
-                    <TableRow key={interview.id}>
+                    <TableRow key={interview.id} className="border-[#12151B]/10 hover:bg-[#FAF8F4]">
                       <TableCell>
                         <div className="flex items-center space-x-3">
-                          <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <Play className="h-4 w-4 text-primary" />
+                          <div className="h-8 w-8 bg-[#3E63DD]/10 rounded-full flex items-center justify-center">
+                            <Play className="h-4 w-4 text-[#3E63DD]" strokeWidth={1.75} />
                           </div>
-                          <span className="font-medium capitalize">{interview.interviewType} Interview</span>
+                          <span className="hist-display font-medium capitalize text-[#12151B]">{interview.interviewType} interview</span>
                         </div>
                       </TableCell>
-                      <TableCell>{new Date(interview.createdAt).toLocaleDateString()}</TableCell>
-                      <TableCell>{interview.duration.split("_")[1]} mins</TableCell>
+                      <TableCell className="hist-body text-[#6B7280]">{new Date(interview.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="hist-body text-[#6B7280]">{interview.duration.split("_")[1]} mins</TableCell>
                       <TableCell>
-                        <Badge variant={interview.rating >= 8 ? "default" : "secondary"}>
+                        <Badge className={`hist-mono text-xs ${
+                          interview.rating >= 8
+                            ? 'bg-[#35D0BA] text-[#12151B] hover:bg-[#35D0BA]'
+                            : 'bg-[#F1EFEA] text-[#6B7280] hover:bg-[#F1EFEA]'
+                        }`}>
                           {interview.rating ? `${interview.rating}/10` : "N/A"}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="capitalize">
+                        <Badge variant="outline" className="hist-mono text-xs capitalize border-[#12151B]/15 text-[#6B7280]">
                           {interview.summary ? "Reviewed" : "Pending"}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <Link href={`/dashboard/interview-history/${interview.id}`}>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="hist-body text-[#3E63DD] hover:text-[#3E63DD] hover:bg-[#3E63DD]/10">
                             <FileText className="w-4 h-4 mr-2" />
-                            View Report
+                            View report
                           </Button>
                         </Link>
                       </TableCell>

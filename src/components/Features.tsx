@@ -1,65 +1,79 @@
-
-import { Card, CardContent } from "@/components/ui/card";
+'use client'
 import { Brain, Clock, Shield, Target, Users, Zap } from "lucide-react";
 
 const Features = () => {
   const features = [
     {
       icon: Brain,
-      title: "AI-Powered Analysis",
-      description: "Advanced natural language processing evaluates responses for technical skills, communication, and cultural fit."
+      title: "AI-powered analysis",
+      description: "Natural language processing evaluates responses for technical skill, communication, and fit."
     },
     {
       icon: Clock,
-      title: "Real-Time Feedback",
-      description: "Get instant insights and recommendations during the interview process to make informed decisions."
+      title: "Real-time feedback",
+      description: "Get instant insight and recommendations during the interview, not days after."
     },
     {
       icon: Shield,
-      title: "Bias-Free Assessment",
-      description: "Eliminate unconscious bias with objective, data-driven evaluation criteria and standardized scoring."
+      title: "Bias-free assessment",
+      description: "Objective, data-driven scoring criteria replace unconscious bias with a standardized rubric."
     },
     {
       icon: Target,
-      title: "Custom Skill Testing",
-      description: "Tailor interviews to specific roles with customizable question sets and competency frameworks."
+      title: "Custom skill testing",
+      description: "Tailor interviews to a role with custom question sets and competency frameworks."
     },
     {
       icon: Users,
-      title: "Collaborative Hiring",
-      description: "Enable team-based evaluation with shared scorecards and centralized candidate management."
+      title: "Collaborative hiring",
+      description: "Team-based evaluation with shared scorecards and centralized candidate records."
     },
     {
       icon: Zap,
-      title: "Seamless Integration",
-      description: "Connect with your existing ATS and HR tools for a streamlined workflow and data synchronization."
+      title: "Seamless integration",
+      description: "Connects to your existing ATS and HR tools, so data syncs without manual entry."
     }
   ];
 
   return (
     <section className="py-24 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Why Choose Our AI Interview Platform?
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .feat-display { font-family: 'Space Grotesk', sans-serif; }
+        .feat-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .feat-mono { font-family: 'IBM Plex Mono', monospace; }
+      `}</style>
+
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-3xl mb-16">
+          <div className="feat-mono text-xs tracking-[0.18em] uppercase text-[#3E63DD] mb-4">
+            Why teams switch
+          </div>
+          <h2 className="feat-display text-4xl md:text-5xl font-bold text-[#12151B] mb-6 leading-tight">
+            Built for how hiring
+            <br />
+            actually happens
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Leverage the power of artificial intelligence to revolutionize your hiring process 
-            and build stronger, more diverse teams.
+          <p className="feat-body text-lg text-[#6B7280] leading-relaxed">
+            Every interview scored the same way, every candidate treated
+            fairly, and every result where your team can actually find it.
           </p>
         </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <div className="grid md:grid-cols-3 border-t border-l border-[#12151B]/10">
           {features.map((feature, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
-              <CardContent className="p-8">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </CardContent>
-            </Card>
+            <div
+              key={index}
+              className="group p-8 border-r border-b border-[#12151B]/10 hover:bg-[#FAF8F4] transition-colors duration-200"
+            >
+              <feature.icon className="w-5 h-5 text-[#3E63DD] mb-5" strokeWidth={1.75} />
+              <h3 className="feat-display text-lg font-semibold text-[#12151B] mb-3">
+                {feature.title}
+              </h3>
+              <p className="feat-body text-[#6B7280] leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
           ))}
         </div>
       </div>

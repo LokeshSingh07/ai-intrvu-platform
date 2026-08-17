@@ -65,23 +65,43 @@ const Auth = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FAF8F4] flex items-center justify-center p-4">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .auth-display { font-family: 'Space Grotesk', sans-serif; }
+        .auth-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .auth-mono { font-family: 'IBM Plex Mono', monospace; }
+      `}</style>
+
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to {platformName}</h1>
-          <p className="text-gray-600">Your AI-powered interview preparation platform</p>
+          <div className="auth-mono text-xs tracking-[0.18em] uppercase text-[#3E63DD] mb-3">
+            Welcome
+          </div>
+          <h1 className="auth-display text-3xl font-bold text-[#12151B] mb-2">{platformName}</h1>
+          <p className="auth-body text-[#6B7280]">Your AI-powered interview preparation platform</p>
         </div>
 
-        <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
+        <Card className="border border-[#12151B]/10 rounded-2xl bg-white shadow-[0_20px_60px_-15px_rgba(18,21,27,0.12)]">
             <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Get Started</CardTitle>
-                <CardDescription>Sign in to your account or create a new one</CardDescription>
+                <CardTitle className="auth-display text-2xl font-semibold text-[#12151B]">Get started</CardTitle>
+                <CardDescription className="auth-body text-[#6B7280]">Sign in to your account or create a new one</CardDescription>
             </CardHeader>
             <CardContent>
                 <Tabs defaultValue="signin" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="signin">Sign In</TabsTrigger>
-                        <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-2 bg-[#F1EFEA] rounded-lg">
+                        <TabsTrigger
+                            value="signin"
+                            className="auth-mono text-xs tracking-wide uppercase data-[state=active]:bg-[#12151B] data-[state=active]:text-white rounded-md"
+                        >
+                            Sign in
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="signup"
+                            className="auth-mono text-xs tracking-wide uppercase data-[state=active]:bg-[#12151B] data-[state=active]:text-white rounded-md"
+                        >
+                            Sign up
+                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="signin" className="space-y-4 mt-6">
@@ -96,19 +116,28 @@ const Auth = () => {
 
                 {/* GOOGLE & GITHUB SIGNIN */}
                 <div className="mt-6">
-                    <Separator className="my-4" />
+                    <div className="flex items-center gap-3 my-4">
+                        <Separator className="flex-1 bg-[#12151B]/10" />
+                        <span className="auth-mono text-[10px] tracking-wide uppercase text-[#8A8F9C]">or</span>
+                        <Separator className="flex-1 bg-[#12151B]/10" />
+                    </div>
                     <div className="space-y-2">
-                        <Button 
-                            variant="outline" 
-                            className="w-full" 
+                        <Button
+                            variant="outline"
+                            className="auth-body w-full border-[#12151B]/15 text-[#12151B] hover:bg-[#F1EFEA] rounded-lg"
                             type="button"
+                            disabled={isSubmitting}
                             onClick={handleGoogleSignIn}
                         >
                             <Chrome className="w-4 h-4 mr-2" />
                             Continue with Google
                         </Button>
 
-                        <Button variant="outline" className="w-full" type="button"
+                        <Button
+                            variant="outline"
+                            className="auth-body w-full border-[#12151B]/15 text-[#12151B] hover:bg-[#F1EFEA] rounded-lg"
+                            type="button"
+                            disabled={isSubmitting}
                             onClick={handleGitHubSignIn}
                         >
                             <Github className="w-4 h-4 mr-2" />
@@ -121,11 +150,11 @@ const Auth = () => {
 
 
         {/* footer */}
-        <div className="text-center mt-6 text-sm text-gray-600">
+        <div className="auth-body text-center mt-6 text-sm text-[#8A8F9C]">
           By signing up, you agree to our{" "}
-          <Link href="/" className="text-blue-600 hover:underline">Terms of Service</Link>
+          <Link href="/" className="text-[#3E63DD] hover:underline">Terms of Service</Link>
           {" "}and{" "}
-          <Link href="/" className="text-blue-600 hover:underline">Privacy Policy</Link>
+          <Link href="/" className="text-[#3E63DD] hover:underline">Privacy Policy</Link>
         </div>
       </div>
     </div>

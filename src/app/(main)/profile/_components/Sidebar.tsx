@@ -6,104 +6,111 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import  { Target } from "lucide-react";
-
-
+import { Target } from "lucide-react";
 
 const SidebarProfile = () => {
-
-
-
   return (
     <div className="space-y-6">
-        {/* Interview Goals */}
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Target className="h-5 w-5 mr-2" />
-                  Interview Goals
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div>
-                    <Label htmlFor="experience">Experience Level</Label>
-                    <Select defaultValue="mid">
-                    <SelectTrigger>
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="entry">Entry Level (0-2 years)</SelectItem>
-                        <SelectItem value="mid">Mid Level (3-5 years)</SelectItem>
-                        <SelectItem value="senior">Senior Level (5+ years)</SelectItem>
-                        <SelectItem value="lead">Lead/Manager (8+ years)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+      {/* Interview Goals */}
+      <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
+        <CardHeader>
+          <CardTitle className="profile-display flex items-center text-[#12151B]">
+            <Target className="h-5 w-5 mr-2 text-[#3E63DD]" strokeWidth={1.75} />
+            Interview goals
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="experience" className="profile-body text-[#12151B]">Experience level</Label>
+            <Select defaultValue="mid">
+              <SelectTrigger className="profile-body rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="entry">Entry level (0-2 years)</SelectItem>
+                <SelectItem value="mid">Mid level (3-5 years)</SelectItem>
+                <SelectItem value="senior">Senior level (5+ years)</SelectItem>
+                <SelectItem value="lead">Lead/manager (8+ years)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-                <div>
-                    <Label htmlFor="targetCompany">Target Company Size</Label>
-                    <Select defaultValue="medium">
-                    <SelectTrigger>
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="startup">Startup (1-50 employees)</SelectItem>
-                        <SelectItem value="small">Small (51-200 employees)</SelectItem>
-                        <SelectItem value="medium">Medium (201-1000 employees)</SelectItem>
-                        <SelectItem value="large">Large (1000+ employees)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <div>
+            <Label htmlFor="targetCompany" className="profile-body text-[#12151B]">Target company size</Label>
+            <Select defaultValue="medium">
+              <SelectTrigger className="profile-body rounded-lg border-[#12151B]/15 focus-visible:ring-[#3E63DD] focus-visible:ring-offset-0">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="startup">Startup (1-50 employees)</SelectItem>
+                <SelectItem value="small">Small (51-200 employees)</SelectItem>
+                <SelectItem value="medium">Medium (201-1000 employees)</SelectItem>
+                <SelectItem value="large">Large (1000+ employees)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-                <div>
-                    <Label>Focus Areas</Label>
-                    <div className="space-y-2 mt-2">
-                        {['Technical Skills', 'Behavioral Questions', 'System Design', 'Leadership'].map((area) => (
-                        <div key={area} className="flex items-center space-x-2">
-                            <Checkbox id={area} defaultChecked={area === 'Technical Skills'} />
-                            <Label htmlFor={area} className="text-sm">{area}</Label>
-                        </div>
-                        ))}
-                    </div>
+          <div>
+            <Label className="profile-body text-[#12151B]">Focus areas</Label>
+            <div className="space-y-2 mt-2">
+              {['Technical Skills', 'Behavioral Questions', 'System Design', 'Leadership'].map((area) => (
+                <div key={area} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={area}
+                    defaultChecked={area === 'Technical Skills'}
+                    className="border-[#12151B]/20 data-[state=checked]:bg-[#3E63DD] data-[state=checked]:border-[#3E63DD]"
+                  />
+                  <Label htmlFor={area} className="profile-body text-sm text-[#374151]">{area}</Label>
                 </div>
-            </CardContent>
-        </Card>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Quick Stats */}
-        <Card>
-            <CardHeader>
-                <CardTitle>Profile Completion</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm">Basic Info</span>
-                        <Badge variant="default">Complete</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm">Resume</span>
-                        <Badge variant="default">Complete</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm">Job Preferences</span>
-                        <Badge variant="default">Complete</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm">Goals</span>
-                        <Badge variant="secondary">Incomplete</Badge>
-                    </div>
-                </div>
-                <div className="mt-4 text-center">
-                    <p className="text-2xl font-bold text-green-600">85%</p>
-                    <p className="text-sm text-gray-600">Profile Complete</p>
-                </div>
-            </CardContent>
-        </Card>
+      {/* Quick Stats */}
+      <Card className="border border-[#12151B]/10 rounded-xl shadow-none">
+        <CardHeader>
+          <CardTitle className="profile-display text-[#12151B]">Profile completion</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="profile-body text-sm text-[#374151]">Basic info</span>
+              <Badge className="profile-mono text-[11px] uppercase tracking-wide bg-[#35D0BA]/15 text-[#12151B] hover:bg-[#35D0BA]/15 border-0">
+                Complete
+              </Badge>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="profile-body text-sm text-[#374151]">Resume</span>
+              <Badge className="profile-mono text-[11px] uppercase tracking-wide bg-[#35D0BA]/15 text-[#12151B] hover:bg-[#35D0BA]/15 border-0">
+                Complete
+              </Badge>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="profile-body text-sm text-[#374151]">Job preferences</span>
+              <Badge className="profile-mono text-[11px] uppercase tracking-wide bg-[#35D0BA]/15 text-[#12151B] hover:bg-[#35D0BA]/15 border-0">
+                Complete
+              </Badge>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="profile-body text-sm text-[#374151]">Goals</span>
+              <Badge className="profile-mono text-[11px] uppercase tracking-wide bg-amber-500/15 text-amber-700 hover:bg-amber-500/15 border-0">
+                Incomplete
+              </Badge>
+            </div>
+          </div>
+          <div className="mt-4 text-center">
+            <p className="profile-display text-2xl font-bold text-[#2BB8A4]">85%</p>
+            <p className="profile-body text-sm text-[#6B7280]">Profile complete</p>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Save Button */}
-        <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-          Save Changes
-        </Button>
+      {/* Save Button */}
+      <Button className="profile-body w-full bg-[#12151B] hover:bg-[#1E222B] text-white rounded-lg">
+        Save changes
+      </Button>
     </div>
   );
 };

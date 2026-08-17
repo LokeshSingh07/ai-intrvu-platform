@@ -1,4 +1,4 @@
-
+'use client'
 import {
   Accordion,
   AccordionContent,
@@ -31,30 +31,47 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section className="py-24 bg-[#FAF8F4]">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+        .faq-display { font-family: 'Space Grotesk', sans-serif; }
+        .faq-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .faq-mono { font-family: 'IBM Plex Mono', monospace; }
+      `}</style>
+
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Frequently Asked Questions
+        <div className="max-w-3xl mx-auto mb-16">
+          <div className="faq-mono text-xs tracking-[0.18em] uppercase text-[#3E63DD] mb-4">
+            FAQ
+          </div>
+          <h2 className="faq-display text-4xl md:text-5xl font-bold text-[#12151B] mb-6 leading-tight">
+            Questions, answered
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Everything you need to know about our AI interview platform. 
-            Can&apos;t find what you&apos;re looking for? Contact our support team.
+          <p className="faq-body text-lg text-[#6B7280] leading-relaxed">
+            Everything you need to know about the platform. Can&apos;t find what
+            you&apos;re looking for? Reach out to our support team.
           </p>
         </div>
-        
-        <div className="max-w-4xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
+
+        <div className="max-w-3xl mx-auto">
+          <Accordion type="single" collapsible>
             {faqs.map((faq, index) => (
-              <AccordionItem 
-                key={index} 
+              <AccordionItem
+                key={index}
                 value={`item-${index}`}
-                className="bg-white border border-gray-200 rounded-lg px-6 shadow-sm hover:shadow-md transition-all duration-300"
+                className="border-b border-[#12151B]/10 first:border-t"
               >
-                <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 py-6">
-                  {faq.question}
+                <AccordionTrigger className="group text-left py-6 hover:no-underline [&>svg]:text-[#8A8F9C]">
+                  <span className="flex items-baseline gap-4">
+                    <span className="faq-mono text-xs text-[#8A8F9C] shrink-0 pt-1">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="faq-display text-lg font-semibold text-[#12151B] group-hover:text-[#3E63DD] transition-colors">
+                      {faq.question}
+                    </span>
+                  </span>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-700 pb-6 leading-relaxed">
+                <AccordionContent className="faq-body text-[#6B7280] pb-6 pl-9 leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

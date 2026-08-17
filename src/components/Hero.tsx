@@ -1,92 +1,165 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, FileText, Brain } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+const TRANSCRIPT = [
+  { speaker: "Interviewer", text: "Walk me through a time you optimized a slow API." },
+  { speaker: "You", text: "Sure — we had a reporting endpoint that took 4s..." },
+];
+
+const FEATURES = [
+  {
+    label: "Voice",
+    title: "Real conversations",
+    body: "Powered by VAPI, so questions and follow-ups happen out loud, not typed.",
+  },
+  {
+    label: "Questions",
+    title: "Built for the role",
+    body: "Grok AI writes technical and HR questions from the job you're prepping for.",
+  },
+  {
+    label: "Storage",
+    title: "Every session saved",
+    body: "Transcripts and scores land in Postgres, so you can track progress over time.",
+  },
+];
+
 const Hero = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-20 pb-24">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
-      <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute top-40 right-20 w-40 h-40 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse delay-1000" />
-      <div className="absolute bottom-20 left-1/3 w-24 h-24 bg-gradient-to-r from-green-400/20 to-blue-400/20 rounded-full blur-2xl animate-pulse delay-500" />
+    <section className="relative overflow-hidden bg-[#FAF8F4] pt-24 pb-20">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
 
-      <div className="relative container mx-auto px-6">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full text-sm font-medium text-gray-700 mb-8 animate-fade-in border border-blue-200/50 backdrop-blur-sm">
-            <Sparkles className="w-4 h-4 mr-2 text-blue-500 animate-pulse" />
-            AI-Powered Interview Platform
+        .hero-display { font-family: 'Space Grotesk', sans-serif; }
+        .hero-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .hero-mono { font-family: 'IBM Plex Mono', monospace; }
+
+        @keyframes waveform {
+          0%, 100% { transform: scaleY(0.3); }
+          50% { transform: scaleY(1); }
+        }
+        @keyframes blink-cursor {
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
+        }
+        @keyframes fade-up {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fade-up 0.6s ease-out both; }
+        .wave-bar { animation: waveform 1.1s ease-in-out infinite; transform-origin: center; }
+        .cursor-blink { animation: blink-cursor 1s step-end infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .wave-bar, .cursor-blink, .fade-up {
+            animation: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="relative max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-16 items-center max-w-6xl mx-auto">
+
+          {/* Left: copy */}
+          <div>
+            <div className="hero-mono text-xs tracking-[0.18em] uppercase text-[#3E63DD] mb-6 fade-up">
+              AI mock interviews
+            </div>
+
+            <h1 className="hero-display text-5xl md:text-6xl font-bold text-[#12151B] mb-6 leading-[1.05] fade-up" style={{ animationDelay: "80ms" }}>
+              Practice out loud.
+              <br />
+              Walk in ready.
+            </h1>
+
+            <p className="hero-body text-lg text-[#4B5160] mb-10 max-w-md leading-relaxed fade-up" style={{ animationDelay: "160ms" }}>
+              A voice-driven interview partner that asks real questions for the
+              role you're going for, and tells you exactly where you lost the room.
+            </p>
+
+            <div className="flex items-center gap-6 mb-12 fade-up" style={{ animationDelay: "240ms" }}>
+              <Button
+                onClick={() => router.push("/auth")}
+                size="lg"
+                className="bg-[#12151B] hover:bg-[#1E222B] text-white px-7 py-6 text-base font-semibold rounded-lg shadow-none group"
+              >
+                Start a mock interview
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+
+            <div className="hero-mono text-xs text-[#8A8F9C] tracking-wide fade-up" style={{ animationDelay: "300ms" }}>
+              Live voice · Adaptive questions · Instant feedback
+            </div>
           </div>
 
-          {/* Heading */}
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight animate-fade-in">
-            Transform Your{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
-              Hiring Process
-            </span>{" "}
-            with AI
-          </h1>
+          {/* Right: signature element — live transcript panel */}
+          <div className="fade-up" style={{ animationDelay: "200ms" }}>
+            <div className="bg-[#12151B] rounded-2xl p-6 shadow-[0_20px_60px_-15px_rgba(18,21,27,0.3)]">
+              {/* header row */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#35D0BA]" />
+                  <span className="hero-mono text-xs text-[#35D0BA] tracking-wide">LIVE · 00:42</span>
+                </div>
+                <div className="flex items-end gap-[3px] h-5">
+                  {[0.4, 0.7, 1, 0.5, 0.8, 0.3, 0.6].map((d, i) => (
+                    <span
+                      key={i}
+                      className="wave-bar w-[3px] bg-[#35D0BA] rounded-full"
+                      style={{ height: "100%", animationDelay: `${i * 0.08}s` }}
+                    />
+                  ))}
+                </div>
+              </div>
 
-          {/* Subtext */}
-          <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in animation-delay-300">
-           Streamline interviews, eliminate bias, and identify top talent with our intelligent interview platform that adapts to your unique hiring needs.
-          </p>
+              {/* transcript */}
+              <div className="space-y-4">
+                {TRANSCRIPT.map((line, i) => (
+                  <div key={i}>
+                    <div className="hero-mono text-[11px] uppercase tracking-wide text-[#6B7280] mb-1">
+                      {line.speaker}
+                    </div>
+                    <div className="hero-body text-[15px] text-[#E7E5E1] leading-relaxed">
+                      {line.text}
+                      {i === TRANSCRIPT.length - 1 && (
+                        <span className="cursor-blink inline-block w-[7px] h-[15px] bg-[#35D0BA] ml-1 align-middle" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in animation-delay-500">  
-            <Button
-              onClick={()=> {
-                router.push("/auth")
-              }}
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group"
-            >
-              <Brain className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-              Start Mock Interview
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <div className="hero-mono text-[11px] text-[#4B5160] mt-6 pt-4 border-t border-white/10">
+                Question 3 of 8 · Backend systems
+              </div>
+            </div>
           </div>
+        </div>
 
-          {/* Feature Grid */}
-          <div className="grid md:grid-cols-3 gap-8 text-center animate-fade-in animation-delay-700">
-
-            {/* Feature 1 */}
-            <div className="p-6 backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse delay-500">
-                <span className="text-sm font-bold text-white">Real Time</span>
+        {/* Feature strip */}
+        <div className="max-w-6xl mx-auto mt-24 pt-10 border-t border-[#12151B]/10">
+          <div className="grid md:grid-cols-3 gap-10 md:gap-0">
+            {FEATURES.map((f, i) => (
+              <div
+                key={f.label}
+                className={i > 0 ? "md:pl-8 md:border-l md:border-[#12151B]/10" : ""}
+              >
+                <div className="hero-mono text-[11px] tracking-[0.18em] uppercase text-[#3E63DD] mb-3">
+                  {f.label}
+                </div>
+                <h3 className="hero-display text-lg font-semibold text-[#12151B] mb-2">
+                  {f.title}
+                </h3>
+                <p className="hero-body text-sm text-[#6B7280] leading-relaxed">
+                  {f.body}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Voice Interaction</h3>
-              <p className="text-gray-600">
-                Uses VAPI to simulate natural, real-time interview conversations.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="p-6 backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse delay-500">
-                <span className="text-sm font-bold text-white">AI</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Dynamic Questions</h3>
-              <p className="text-gray-600">
-                Grok AI generates personalized technical and HR interview questions.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="p-6 backdrop-blur-sm bg-white/50 rounded-2xl border border-gray-200/50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse delay-500">
-                <span className="text-sm font-bold text-white">Secure</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Data Management</h3>
-              <p className="text-gray-600">
-                User sessions and results are safely stored using PostgreSQL + Prisma.
-              </p>
-            </div>
-
+            ))}
           </div>
         </div>
       </div>
