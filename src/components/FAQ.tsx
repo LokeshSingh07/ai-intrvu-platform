@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { emailAddress } from "@/data/constant";
 
 const FAQ = () => {
   const faqs = [
@@ -49,7 +50,13 @@ const FAQ = () => {
           </h2>
           <p className="faq-body text-lg text-[#6B7280] leading-relaxed">
             Everything you need to know about the platform. Can&apos;t find what
-            you&apos;re looking for? Reach out to our support team.
+            you&apos;re looking for?{" "}
+            <a
+              href={`mailto:${emailAddress}`}
+              className="text-[#3E63DD] hover:underline"
+            >
+              Reach out to our support team.
+            </a>
           </p>
         </div>
 

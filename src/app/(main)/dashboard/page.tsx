@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Target, TrendingUp, Clock, Loader2 } from "lucide-react";
+import { Play, Target, TrendingUp, Clock, Loader2, LogOut } from "lucide-react";
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import QuickAction from './_components/QuickAtion';
@@ -18,9 +18,10 @@ import { formatDate } from '@/lib/formatDate';
 
 
 const Dashboard = () => {
-  const router  = useRouter();
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
+  const [loggingOut, setLoggingOut] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -64,6 +65,26 @@ const Dashboard = () => {
     fetch();
   },[])
 
+
+  // Pulled out (rather than inlined in onClick) so it can be reused, tested,
+  // and so the button below can just react to loggingOut/disabled state.
+  const handleLogout = async () => {
+    if (loggingOut) return; // guard against double-clicks firing signOut twice
+
+    try {
+      setLoggingOut(true);
+      await signOut({ redirect: false });
+      toast.success("Signed out successfully!");
+      router.push("/auth");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong signing you out. Please try again.");
+      setLoggingOut(false);
+    }
+    // no `finally` resetting loggingOut on success — we're navigating away,
+    // and leaving the button disabled/spinning until then avoids a flash
+    // of an active "Logout" button right before the redirect happens.
+  };
 
 
   const fontImports = (
@@ -119,6 +140,7 @@ const Dashboard = () => {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               <Button
                 onClick={() => router.push("/dashboard/interview-setup")}
+                disabled={loggingOut}
                 className="dash-body bg-[#12151B] hover:bg-[#1E222B] text-white h-10 sm:h-12 rounded-lg flex items-center justify-center"
               >
                 <Play className="w-4 h-4 mr-2" />
@@ -127,16 +149,16 @@ const Dashboard = () => {
 
               <Button
                 variant="outline"
-                className="dash-body border border-[#12151B]/15 h-10 sm:h-12 rounded-lg text-[#12151B]"
-                onClick={async () => {
-                  await signOut({ redirect: false });
-                  setTimeout(() => {
-                    toast.success("Signed out successfully!");
-                    router.push("/auth");
-                  }, 800);
-                }}
+                className="dash-body border border-[#12151B]/15 h-10 sm:h-12 rounded-lg text-[#12151B] disabled:opacity-60"
+                disabled={loggingOut}
+                onClick={handleLogout}
               >
-                Logout
+                {loggingOut ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <LogOut className="w-4 h-4 mr-2" />
+                )}
+                {loggingOut ? "Signing out…" : "Logout"}
               </Button>
             </div>
 

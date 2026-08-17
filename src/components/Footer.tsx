@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { emailAddress, platformName } from "@/data/constant";
 import { Mic, Mail, Phone, MapPin } from "lucide-react";
+import Link from "next/link";
 
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="bg-[#12151B] text-white">
       <style jsx global>{`
@@ -28,22 +31,28 @@ const Footer = () => {
               A voice-driven interview partner that helps teams evaluate
               candidates consistently and fairly.
             </p>
-            <div className="space-y-2">
-              <div className="foot-body flex items-center text-[#9CA1AD]">
-                <Mail className="w-4 h-4 mr-3 text-[#6B7280]" />
+            <div className="space-y-2.5">
+              <a
+                href={`mailto:${emailAddress}`}
+                className="foot-body group flex items-center text-[#9CA1AD] hover:text-white transition-colors w-fit"
+              >
+                <Mail className="w-4 h-4 mr-3 text-[#6B7280] group-hover:text-[#35D0BA] transition-colors" />
                 <span>{emailAddress}</span>
-              </div>
-              <div className="foot-body flex items-center text-[#9CA1AD]">
-                <Phone className="w-4 h-4 mr-3 text-[#6B7280]" />
+              </a>
+              <a
+                href="tel:+15551234567"
+                className="foot-body group flex items-center text-[#9CA1AD] hover:text-white transition-colors w-fit"
+              >
+                <Phone className="w-4 h-4 mr-3 text-[#6B7280] group-hover:text-[#35D0BA] transition-colors" />
                 <span>+1 (555) 123-4567</span>
-              </div>
+              </a>
               <div className="foot-body flex items-center text-[#9CA1AD]">
                 <MapPin className="w-4 h-4 mr-3 text-[#6B7280]" />
                 <span>India</span>
               </div>
             </div>
           </div>
-          
+
           {/* Product */}
           <div>
             <h3 className="foot-mono text-xs tracking-[0.14em] uppercase text-[#6B7280] mb-6">Product</h3>
@@ -54,7 +63,7 @@ const Footer = () => {
               <li><a href="#" className="text-[#9CA1AD] hover:text-white transition-colors">Security</a></li>
             </ul>
           </div>
-          
+
           {/* Company */}
           <div>
             <h3 className="foot-mono text-xs tracking-[0.14em] uppercase text-[#6B7280] mb-6">Company</h3>
@@ -65,9 +74,9 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        
+
         <Separator className="bg-white/10 mb-8" />
-        
+
         {/* CTA Section */}
         <div className="text-center mb-8">
           <h3 className="foot-display text-2xl font-bold mb-4">Ready to transform your hiring process?</h3>
@@ -76,16 +85,21 @@ const Footer = () => {
             Start your free trial
           </Button>
         </div>
-        
+
         <Separator className="bg-white/10 mb-8" />
-        
+
         {/* Bottom */}
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="foot-mono text-[#6B7280] text-xs">
-            © 2025 <span className="text-[#9CA1AD]">CWL.</span> All rights reserved.
+            © {year} <span className="text-[#9CA1AD]">{platformName}.</span> All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            {/* <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Contact</a> */}
+          <div className="flex items-center gap-6">
+            <Link href="/" className="foot-body text-[#9CA1AD] hover:text-white transition-colors text-sm">
+              Terms
+            </Link>
+            <Link href="/" className="foot-body text-[#9CA1AD] hover:text-white transition-colors text-sm">
+              Privacy
+            </Link>
           </div>
         </div>
       </div>

@@ -64,9 +64,14 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-8 border-r border-b border-[#12151B]/10 hover:bg-[#FAF8F4] transition-colors duration-200"
+              className="group relative p-8 border-r border-b border-[#12151B]/10 hover:bg-[#FAF8F4] transition-colors duration-200"
             >
-              <feature.icon className="w-5 h-5 text-[#3E63DD] mb-5" strokeWidth={1.75} />
+              {/* accent line that draws in on hover, ties the card back to the brand color */}
+              <span className="absolute top-0 left-0 h-[2px] w-0 bg-[#3E63DD] group-hover:w-full transition-all duration-300 ease-out" />
+
+              <div className="w-10 h-10 rounded-lg bg-[#3E63DD]/[0.08] flex items-center justify-center mb-5 group-hover:bg-[#3E63DD]/[0.12] transition-colors">
+                <feature.icon className="w-5 h-5 text-[#3E63DD]" strokeWidth={1.75} />
+              </div>
               <h3 className="feat-display text-lg font-semibold text-[#12151B] mb-3">
                 {feature.title}
               </h3>
