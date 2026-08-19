@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,30 +28,95 @@ interface SavedMessage {
 export default function LiveInterview() {
   const router = useRouter();
   const { data: session } = useSession();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const interviewData = useSelector((state: RootState) => state.interview);
-  // @ts-expect-error
-  const interviewSessionId = interviewData?.interviewData?.interview?.id;
+  const interviewState = useSelector((state: RootState) => state.interview);
+  // Extract interview data more clearly
+  const interviewData = interviewState?.interviewData;
+  const interview = interviewData?.interview;
+  const questions = interviewData?.questions;
+  const interviewSessionId = interview?.id;
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
 
-  const generateFeedback = async () => {
-    if (!messages.length) return;
+  // Prevents generateFeedback from firing twice (once from the disconnect
+  // button, once from the natural 'call-end' event) and guards against it
+  // firing again if the call never actually produced a transcript.
+  const feedbackGeneratedRef = useRef(false);
+  const messagesRef = useRef<SavedMessage[]>([]);
+  messagesRef.current = messages;
+
+  const generateFeedback = useCallback(async () => {
+    if (feedbackGeneratedRef.current) return;
+    if (!messagesRef.current.length) {
+      toast('No conversation was recorded, so no report could be generated.');
+      return;
+    }
+    feedbackGeneratedRef.current = true;
     try {
-      const response = await generateFeedbackForInterview(messages, interviewSessionId);
-      console.log('feedback resonse : ', response);
+      const response = await generateFeedbackForInterview(messagesRef.current, interviewSessionId);
+      console.log('feedback response: ', response);
       toast('Report generated successfully');
     } catch (err: any) {
       console.error('Save transcript error:', err);
-      toast('Failed to save transcript');
+      toast('Failed to save transcript. You can retry from the report page.');
+      // Allow a retry attempt since this one failed.
+      feedbackGeneratedRef.current = false;
     }
+  }, [interviewSessionId]);
+
+  // Maps Vapi/browser error shapes to a readable message. Vapi's web SDK
+  // frequently emits errors as Error instances, plain objects with a
+  // `message`/`error` field, or (on mic issues) a DOMException from
+  // getUserMedia — so we can't assume a single shape.
+  const getErrorMessage = (error: unknown): string => {
+    if (!error) return 'Something went wrong starting the interview.';
+    if (error instanceof DOMException) {
+      if (error.name === 'NotAllowedError') {
+        return 'Microphone access was denied. Please allow microphone permissions and try again.';
+      }
+      if (error.name === 'NotFoundError') {
+        return 'No microphone was found on this device.';
+      }
+      return `Microphone error: ${error.message}`;
+    }
+    if (typeof error === 'string') return error;
+    if (typeof error === 'object') {
+      const anyErr = error as any;
+      if (anyErr.errorMsg) return anyErr.errorMsg;
+      if (anyErr.message) return anyErr.message;
+      if (anyErr.error?.message) return anyErr.error.message;
+    }
+    return 'An unexpected error occurred during the interview.';
   };
 
+  // Check if interview data exists, redirect if missing
   useEffect(() => {
-    const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
-    const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+    if (!interview || !questions || !questions.length) {
+      if (!isRedirecting) {
+        setIsRedirecting(true);
+        toast.error('Interview data not found. Redirecting to setup...');
+        setTimeout(() => {
+          router.push('/dashboard/interview-setup');
+        }, 1500);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const onCallStart = () => {
+      setCallStatus(CallStatus.ACTIVE);
+    };
+
+    const onCallEnd = () => {
+      setCallStatus(CallStatus.FINISHED);
+      // Covers the case where the assistant (or the network) ends the call
+      // on its own, not just when the user hits "End interview".
+      generateFeedback();
+    };
+
     const onMessage = (message: any) => {
       if (message?.type === 'transcript' && message?.transcriptType === 'final') {
         const newMessage: SavedMessage = {
@@ -62,9 +127,18 @@ export default function LiveInterview() {
         setMessages((prev) => [...prev, newMessage]);
       }
     };
+
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
-    const onError = (error: Error) => console.log('error: ', error);
+
+    const onError = (error: unknown) => {
+      console.error('Vapi error:', error);
+      toast(getErrorMessage(error));
+      // Without this, a failed start (bad mic permissions, invalid
+      // assistant config, provider outage, etc.) leaves the UI stuck on
+      // "CONNECTING" forever since call-start never fires.
+      setCallStatus((prev) => (prev === CallStatus.ACTIVE ? CallStatus.FINISHED : CallStatus.INACTIVE));
+    };
 
     vapi.on('call-start', onCallStart);
     vapi.on('call-end', onCallEnd);
@@ -81,13 +155,19 @@ export default function LiveInterview() {
       vapi.off('speech-end', onSpeechEnd);
       vapi.off('error', onError);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [generateFeedback]);
 
+  // Stop any in-progress call if the user navigates away mid-interview,
+  // so we don't leave the mic stream / Vapi session running in the background.
   useEffect(() => {
-    if (callStatus === CallStatus.FINISHED) {
-      // generateFeedback();
-    }
-  }, [callStatus]);
+    return () => {
+      if (callStatus === CallStatus.ACTIVE || callStatus === CallStatus.CONNECTING) {
+        vapi.stop();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const transcriptDiv = document.querySelector('.transcript-container');
@@ -97,20 +177,32 @@ export default function LiveInterview() {
   }, [messages]);
 
   const handleCall = async () => {
+    // Data is already extracted in state at the top
+    if (!interview || !questions || !questions.length) {
+      toast('Interview data not found. Please go back and set up your interview again.');
+      return;
+    }
+
+    if (!session?.user?.name) {
+      toast('You need to be signed in to start an interview.');
+      return;
+    }
+
+    // Ask for mic permission explicitly before handing off to Vapi. This
+    // gives a clear error immediately instead of a silent hang inside the SDK.
     try {
-      setCallStatus(CallStatus.CONNECTING);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+    } catch (err) {
+      toast(getErrorMessage(err));
+      return;
+    }
 
-      // @ts-expect-error
-      const interview = interviewData?.interviewData?.interview;
-      // @ts-ignore-error
-      const questions = interviewData?.interviewData?.questions;
+    setCallStatus(CallStatus.CONNECTING);
+    feedbackGeneratedRef.current = false;
+    setMessages([]);
 
-      if (!interview || !questions) {
-        toast('Interview data not found');
-        setCallStatus(CallStatus.INACTIVE);
-        return;
-      }
-
+    try {
       const questionsList = questions.map((q: any, idx: number) => `${idx + 1}. ${q.question}`).join('\n');
       const assistantPrompt = `
         You are an AI voice assistant conducting a ${interview.interviewType} interview for a ${interview.jobPosition} candidate.
@@ -129,7 +221,7 @@ export default function LiveInterview() {
 
       const assistantOptions = {
         name: 'AI Recruiter',
-        firstMessage: `Hi ${session?.user?.name}, how are you? Ready for your interview on ${interview.jobPosition}?`,
+        firstMessage: `Hi ${session.user.name}, how are you? Ready for your interview on ${interview.jobPosition}?`,
         transcriber: {
           provider: 'deepgram',
           model: 'nova-2',
@@ -146,23 +238,34 @@ export default function LiveInterview() {
         },
       };
 
+      // vapi.start() returns a promise that rejects on setup failure
+      // (bad API key, invalid assistant config, etc.) — that rejection was
+      // previously the only thing caught, so runtime errors from the
+      // 'error' event never reset the UI. Both paths are now handled.
       // @ts-ignore-error
       await vapi.start(assistantOptions);
     } catch (err) {
       console.error('Call start failed:', err);
+      toast(getErrorMessage(err));
       setCallStatus(CallStatus.INACTIVE);
-      toast('Failed to start interview');
     }
   };
 
   const handleDisconnect = async () => {
     try {
       await vapi.stop();
+      // Note: setting FINISHED and calling generateFeedback here is
+      // redundant with onCallEnd in most cases (vapi.stop() triggers
+      // 'call-end'), but kept as a safety net in case that event is
+      // delayed or dropped. generateFeedback() is idempotent via the ref guard.
       setCallStatus(CallStatus.FINISHED);
       await generateFeedback();
     } catch (err) {
       console.error('Disconnect failed:', err);
-      toast('Failed to end call');
+      toast(getErrorMessage(err));
+      // Force the UI out of ACTIVE even if vapi.stop() itself errored,
+      // so the user isn't stuck with no way to proceed.
+      setCallStatus(CallStatus.FINISHED);
     }
   };
 
@@ -214,6 +317,8 @@ export default function LiveInterview() {
               )
             ) : callStatus === CallStatus.FINISHED ? (
               <CheckCircle className="text-[#35D0BA]" strokeWidth={1.75} size={40} />
+            ) : callStatus === CallStatus.CONNECTING ? (
+              <Loader2 className="text-[#3E63DD] animate-spin" strokeWidth={1.75} size={40} />
             ) : null}
           </div>
 
@@ -221,6 +326,9 @@ export default function LiveInterview() {
           <div className="text-center space-y-1">
             {callStatus === CallStatus.INACTIVE && (
               <p className="li-body text-[#6B7280] text-lg">Ready to start your mock interview</p>
+            )}
+            {callStatus === CallStatus.CONNECTING && (
+              <p className="li-body text-[#6B7280] text-lg">Connecting to your interviewer…</p>
             )}
             {callStatus === CallStatus.ACTIVE && (
               <p className="li-body text-[#374151] text-lg">

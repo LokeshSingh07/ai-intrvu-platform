@@ -79,7 +79,11 @@ enum JobPosition {
   devops_engineer
 }
 
-
+enum InterviewStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
 
 
 // ====================================================================================
@@ -132,6 +136,9 @@ model InterviewSession{
 
   faceMoveCount             String?
   createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+  status                    InterviewStatus @default(IN_PROGRESS)  // IN_PROGRESS | COMPLETED | ABANDONED
+
   answers                   Question[]
 }
 
@@ -140,7 +147,7 @@ model InterviewSession{
 model Question{
   id                        String          @id       @default(uuid())
   interviewSessionId        String
-  interviewSession          InterviewSession          @relation(fields: [interviewSessionId], references: [id])
+  interviewSession          InterviewSession @relation(fields: [interviewSessionId], references: [id], onDelete: Cascade)
   question                  String
   correctAnswer             String
   userAnswer                String

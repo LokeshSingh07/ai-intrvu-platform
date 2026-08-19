@@ -83,7 +83,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-[#FAF8F4] pt-24 pb-20">
+    <section className="relative overflow-hidden bg-[#FAF8F4] pt-24 pb-20 px-6">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
 

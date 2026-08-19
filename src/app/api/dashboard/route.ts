@@ -4,9 +4,6 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
-
-
-
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -19,41 +16,57 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = session.user.id;
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized: User ID missing in session", data: null },
+        { status: 401 }
+      );
+    }
 
-    // Get all interview sessions for user
-    const interviews = await prisma.interviewSession.findMany({
-      where: { userId },
-      include: { answers: true },
-    });
+    // Run everything in parallel — none of these depend on each other
+    const [
+      totalInterviews,
+      ratedSessions,
+      totalAnswers,
+      correctAnswers,
+      recentInterviews,
+    ] = await Promise.all([
+      prisma.interviewSession.count({ where: { userId } }),
 
-    const totalInterviews = interviews.length;
+      prisma.interviewSession.findMany({
+        where: { userId, rating: { not: null } },
+        select: { rating: true },
+      }),
 
-    // Calculate average rating
-    const ratings = interviews
-      .map((interview) => Number(interview.rating))
+      prisma.question.count({
+        where: { interviewSession: { userId } },
+      }),
+
+      prisma.question.count({
+        where: { interviewSession: { userId }, isCorrect: true },
+      }),
+
+      prisma.interviewSession.findMany({
+        where: { userId },
+        take: 4,
+        orderBy: { createdAt: "desc" },
+      }),
+    ]);
+
+    // rating is String? in the schema — parse defensively
+    const parsedRatings = ratedSessions
+      .map((s) => Number(s.rating))
       .filter((r) => !isNaN(r));
 
     const averageRating =
-      ratings.length > 0
-        ? (ratings.reduce((sum, val) => sum + val, 0) / ratings.length).toFixed(1)
+      parsedRatings.length > 0
+        ? Number(
+            (parsedRatings.reduce((sum, val) => sum + val, 0) / parsedRatings.length).toFixed(1)
+          )
         : null;
 
-    // Calculate overall question accuracy
-    const allAnswers = interviews.flatMap((interview) => interview.answers);
-
-    const correctAnswers = allAnswers.filter((a) => a.isCorrect === true).length;
-    const totalAnswers = allAnswers.length;
-
-    const accuracy = totalAnswers > 0
-      ? Number(((correctAnswers / totalAnswers) * 100).toFixed(2))
-      : null;
-
-    // Fetch latest 4 interviews
-    const recentInterviews = await prisma.interviewSession.findMany({
-      where: { userId },
-      take: 4,
-      orderBy: { createdAt: "desc" },
-    });
+    const accuracy =
+      totalAnswers > 0 ? Number(((correctAnswers / totalAnswers) * 100).toFixed(2)) : null;
 
     const result = {
       totalInterviewCount: totalInterviews,
@@ -74,4 +87,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
